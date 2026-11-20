@@ -122,22 +122,24 @@
                     <i class="fa-solid fa-mosque text-lg"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl font-bold text-emerald-900 dark:text-emerald-400 leading-tight">আমলনামা</h1>
-                    <p id="current-date-display" class="text-xs text-slate-500 dark:text-slate-400 font-medium">আজকের তারিখ লোড হচ্ছে...</p>
+                    <h1 class="text-xl font-bold text-emerald-900 dark:text-emerald-400 leading-tight">আমার দৈনিক আমলনামা</h1>
+                    <div id="current-date-display" class="text-xs text-slate-500 dark:text-slate-400 font-medium leading-snug mt-0.5 space-y-0.5">
+                        <div>আরবি তারিখ লোড হচ্ছে...</div>
+                        <div>বাংলা তারিখ লোড হচ্ছে...</div>
+                        <div>ইংরেজি তারিখ লোড হচ্ছে...</div>
+                    </div>
                 </div>
             </div>
 
+            <!-- Header Action Controls -->
             <div class="flex items-center gap-2">
-                <!-- Sound Toggle -->
-                <button id="sound-toggle-btn" onclick="toggleSound()" title="শব্দ চালু/বন্ধ করুন" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-slate-700 transition">
-                    <i id="sound-icon" class="fa-solid fa-volume-high text-sm"></i>
+                <button type="button" onclick="toggleSound()" title="সাউন্ড চালু/বন্ধ করুন" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center transition">
+                    <i id="sound-icon" class="fa-solid fa-volume-high text-sm text-emerald-600 dark:text-emerald-400"></i>
                 </button>
-                <!-- Dark Mode Toggle -->
-                <button onclick="toggleDarkMode()" title="ডার্ক/লাইট মোড" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-slate-700 transition">
+                <button type="button" onclick="toggleDarkMode()" title="ডার্ক/লাইট মোড" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center transition">
                     <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
                 </button>
-                <!-- Reset Day Button -->
-                <button onclick="openResetModal()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800/60 hover:bg-amber-100 dark:hover:bg-amber-900/50 text-xs font-semibold transition">
+                <button type="button" onclick="openResetModal()" title="আজকের হিসাব রিসেট করুন" class="px-3 py-2 rounded-xl bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/60 border border-amber-200/80 dark:border-amber-800/60 text-xs font-semibold flex items-center gap-1.5 transition">
                     <i class="fa-solid fa-rotate-right"></i>
                     <span class="hidden sm:inline">নতুন দিন শুরু</span>
                 </button>
@@ -145,80 +147,53 @@
         </div>
     </header>
 
-    <!-- Main Container -->
+    <!-- Main Content Container -->
     <main class="max-w-5xl mx-auto px-4 pt-6 space-y-6">
 
-        <!-- Section 1: Daily Report & Progress Dashboard -->
-        <section class="bg-gradient-to-br from-emerald-700 via-emerald-800 to-emerald-950 rounded-3xl p-5 sm:p-7 text-white shadow-xl shadow-emerald-950/15 relative overflow-hidden">
-            <!-- Decorative crescent background icon -->
-            <i class="fa-solid fa-star-and-crescent absolute -right-6 -bottom-6 text-9xl text-white/5 pointer-events-none"></i>
-
-            <div class="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
-                <!-- Left: Circular Progress Indicator -->
-                <div class="flex items-center gap-5">
-                    <div class="relative w-28 h-28 sm:w-32 sm:h-32 flex-shrink-0">
-                        <svg class="w-full h-full" viewBox="0 0 120 120">
-                            <circle class="text-emerald-950/60 stroke-current" stroke-width="10" cx="60" cy="60" r="50" fill="transparent"></circle>
-                            <circle id="overall-progress-ring" class="progress-ring-circle" stroke="#FF3D00" stroke-width="10" stroke-linecap="round" cx="60" cy="60" r="50" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="314.16"></circle>
+        <!-- Daily Amal Report Dashboard -->
+        <section class="bg-gradient-to-br from-[#FF3D00] via-[#e63700] to-[#b82b00] text-white rounded-3xl p-5 sm:p-6 shadow-lg shadow-[#FF3D00]/20 border border-orange-300/30">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                <!-- Overall Progress Ring -->
+                <div class="md:col-span-4 flex flex-col items-center justify-center text-center">
+                    <div class="relative w-32 h-32 flex items-center justify-center">
+                        <svg class="w-32 h-32" viewBox="0 0 120 120">
+                            <circle cx="60" cy="60" r="50" fill="none" stroke="currentColor" stroke-width="10" class="text-white/25"></circle>
+                            <circle id="overall-progress-ring" cx="60" cy="60" r="50" fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" stroke-dasharray="314.159" stroke-dashoffset="314.159" class="progress-ring-circle"></circle>
                         </svg>
                         <div class="absolute inset-0 flex flex-col items-center justify-center">
-                            <span id="overall-percentage-text" class="text-2xl sm:text-3xl font-bold text-white">০%</span>
-                            <span class="text-[11px] text-emerald-200">সম্পন্ন হয়েছে</span>
+                            <span id="overall-percentage-text" class="text-2xl font-extrabold text-white">০%</span>
+                            <span class="text-[11px] text-orange-100">সম্পন্ন হয়েছে</span>
                         </div>
-                    </div>
-
-                    <div>
-                        <span class="inline-block px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30 text-xs font-medium mb-2">
-                            দৈনিক আমল রিপোর্ট
-                        </span>
-                        <h2 id="motivational-title" class="text-xl sm:text-2xl font-bold text-white leading-snug">
-                            আল্লাহ আপনার আমল কবুল করুন
-                        </h2>
-                        <p id="motivational-subtitle" class="text-sm text-emerald-100/80 mt-1">
-                            আজকের নির্ধারিত নামাজ ও জিকিরগুলো সম্পন্ন করে টিক চিহ্ন দিন।
-                        </p>
                     </div>
                 </div>
 
-                <!-- Right: 3 Summary Metric Cards -->
-                <div class="grid grid-cols-3 gap-2.5 sm:gap-3 w-full md:w-auto">
-                    <!-- Card 1: Total Rakats -->
-                    <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3 sm:p-4 text-center">
-                        <div class="w-8 h-8 mx-auto mb-1.5 rounded-lg bg-amber-400/20 text-amber-300 flex items-center justify-center">
-                            <i class="fa-solid fa-person-praying text-sm"></i>
-                        </div>
-                        <div id="total-rakats-display" class="text-xl sm:text-2xl font-bold text-white">০</div>
-                        <div class="text-[11px] sm:text-xs text-emerald-200 mt-0.5">মোট রাকাত</div>
+                <!-- Summary & 3 Stat Cards -->
+                <div class="md:col-span-8 space-y-4">
+                    <div>
+                        <span class="inline-block text-xs font-bold text-white bg-white/15 border border-white/20 px-3 py-1 rounded-full mb-1.5">
+                            দৈনিক আমল রিপোর্ট
+                        </span>
+                        <h2 id="motivational-title" class="text-xl sm:text-2xl font-bold text-white">
+                            আল্লাহ আপনার আমল কবুল করুন
+                        </h2>
+                        <p id="motivational-subtitle" class="text-xs sm:text-sm text-orange-100/95 mt-0.5">
+                            আজকের নির্ধারিত নামাজ ও জিকিরগুলো সম্পন্ন করে টিক চিহ্ন দিন।
+                        </p>
                     </div>
 
-                    <!-- Card 2: Prayers Completed -->
-                    <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3 sm:p-4 text-center">
-                        <div class="w-8 h-8 mx-auto mb-1.5 rounded-lg bg-white/15 text-white flex items-center justify-center">
-                            <i class="fa-solid fa-check-double text-sm"></i>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="p-3.5 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20 text-center">
+                            <div class="text-xs text-orange-100 mb-1">মোট রাকাত</div>
+                            <div id="total-rakats-display" class="text-xl sm:text-2xl font-extrabold text-white">০</div>
                         </div>
-                        <div id="prayers-completed-display" class="text-xl sm:text-2xl font-bold text-white">০ / ৫</div>
-                        <div class="text-[11px] sm:text-xs text-emerald-100 mt-0.5">ওয়াক্ত নামাজ</div>
-                    </div>
-
-                    <!-- Card 3: Amals/Tasbih Completed -->
-                    <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3 sm:p-4 text-center">
-                        <div class="w-8 h-8 mx-auto mb-1.5 rounded-lg bg-white/15 text-white flex items-center justify-center">
-                            <i class="fa-solid fa-hands-praying text-sm"></i>
+                        <div class="p-3.5 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20 text-center">
+                            <div class="text-xs text-orange-100 mb-1">ওয়াক্ত নামাজ</div>
+                            <div id="prayers-completed-display" class="text-xl sm:text-2xl font-extrabold text-white">০ / ৫</div>
                         </div>
-                        <div id="amals-completed-display" class="text-xl sm:text-2xl font-bold text-white">০ / ৪</div>
-                        <div class="text-[11px] sm:text-xs text-emerald-100 mt-0.5">তসবি ও আমল</div>
-                    </div>
-                        <div id="prayers-completed-display" class="text-xl sm:text-2xl font-bold text-white">০ / ৫</div>
-                        <div class="text-[11px] sm:text-xs text-emerald-200 mt-0.5">ওয়াক্ত নামাজ</div>
-                    </div>
-
-                    <!-- Card 3: Amals/Tasbih Completed -->
-                    <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3 sm:p-4 text-center">
-                        <div class="w-8 h-8 mx-auto mb-1.5 rounded-lg bg-teal-400/20 text-teal-200 flex items-center justify-center">
-                            <i class="fa-solid fa-hands-praying text-sm"></i>
+                        <div class="p-3.5 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20 text-center">
+                            <div class="text-xs text-orange-100 mb-1">তসবি ও আমল</div>
+                            <div id="amals-completed-display" class="text-xl sm:text-2xl font-extrabold text-white">০ / ১৪</div>
                         </div>
-                        <div id="amals-completed-display" class="text-xl sm:text-2xl font-bold text-white">০ / ৪</div>
-                        <div class="text-[11px] sm:text-xs text-emerald-200 mt-0.5">তসবি ও আমল</div>
                     </div>
                 </div>
             </div>
@@ -235,22 +210,22 @@
                             <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
                             পাঁচ ওয়াক্ত নামাজ
                         </h3>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">নামাজ আদায় শেষে টিক চিহ্ন দিন</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">ফরজ, সুন্নত, নফল ও বিতর আলাদা ট্যাবে টিক দিন</p>
                     </div>
 
                     <!-- Rakat Calculation Mode Toggle (Fard vs Full Sunnah+Fard) -->
                     <div class="flex items-center bg-slate-100 dark:bg-slate-700/70 p-1 rounded-xl text-xs">
-                        <button id="mode-full-btn" onclick="setRakatMode('full')" class="px-2.5 py-1 rounded-lg font-semibold transition bg-emerald-600 text-white shadow-sm">
+                        <button id="mode-full-btn" type="button" onclick="setRakatMode('full')" class="px-2.5 py-1 rounded-lg font-semibold transition bg-emerald-600 text-white shadow-sm">
                             সুন্নতসহ
                         </button>
-                        <button id="mode-fard-btn" onclick="setRakatMode('fard')" class="px-2.5 py-1 rounded-lg font-semibold transition text-slate-600 dark:text-slate-300">
+                        <button id="mode-fard-btn" type="button" onclick="setRakatMode('fard')" class="px-2.5 py-1 rounded-lg font-semibold transition text-slate-600 dark:text-slate-300">
                             শুধু ফরজ
                         </button>
                     </div>
                 </div>
 
                 <!-- Prayers List Container -->
-                <div id="prayers-list" class="space-y-2.5">
+                <div id="prayers-list" class="space-y-3">
                     <!-- Rendered dynamically via JS -->
                 </div>
 
@@ -298,19 +273,19 @@
                     <!-- Tap Button & Controls -->
                     <div class="flex items-center justify-center gap-4 sm:gap-6">
                         <!-- Decrement (-1) -->
-                        <button onclick="decrementActiveAmal()" title="১ কমান" class="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 flex items-center justify-center text-lg font-bold transition shadow-sm">
+                        <button type="button" onclick="decrementActiveAmal()" title="১ কমান" class="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 flex items-center justify-center text-lg font-bold transition shadow-sm">
                             -১
                         </button>
 
                         <!-- Main Big Tap Circle -->
-                        <button id="main-tap-btn" onclick="incrementActiveAmal()" class="tasbih-btn w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-b from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white shadow-xl shadow-emerald-600/30 border-4 border-emerald-200 dark:border-emerald-800 flex flex-col items-center justify-center transition-all select-none cursor-pointer">
+                        <button id="main-tap-btn" type="button" onclick="incrementActiveAmal()" class="tasbih-btn w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-b from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white shadow-xl shadow-emerald-600/30 border-4 border-emerald-200 dark:border-emerald-800 flex flex-col items-center justify-center transition-all select-none cursor-pointer">
                             <i class="fa-solid fa-hand-pointer text-2xl mb-1 opacity-90"></i>
                             <span class="text-base font-bold tracking-wide">গণনা করুন</span>
                             <span class="text-[10px] text-emerald-100 opacity-80">+১ চাপুন</span>
                         </button>
 
                         <!-- Reset Current Zikr -->
-                        <button onclick="resetActiveAmal()" title="এই তসবি রিসেট করুন" class="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/50 border border-amber-200/70 dark:border-amber-800/50 flex items-center justify-center text-base transition shadow-sm">
+                        <button type="button" onclick="resetActiveAmal()" title="এই তসবি রিসেট করুন" class="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/50 border border-amber-200/70 dark:border-amber-800/50 flex items-center justify-center text-base transition shadow-sm">
                             <i class="fa-solid fa-rotate-left"></i>
                         </button>
                     </div>
@@ -327,7 +302,7 @@
                             <p class="text-xs text-slate-500 dark:text-slate-400">যেকোনো আমলে ক্লিক করে তসবি পড়ুন অথবা সরাসরি টিক দিন</p>
                         </div>
 
-                        <button onclick="toggleAddAmalForm()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition">
+                        <button type="button" onclick="toggleAddAmalForm()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition">
                             <i class="fa-solid fa-plus"></i>
                             <span>নতুন আমল যোগ</span>
                         </button>
@@ -372,7 +347,7 @@
         </div>
     </main>
 
-    <!-- Custom Toast Notification Box (No alert() used) -->
+    <!-- Custom Toast Notification Box -->
     <div id="toast-box" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
         <div class="bg-slate-900 dark:bg-emerald-950 text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-500/30 flex items-center gap-3 text-sm font-medium">
             <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400"></i>
@@ -380,7 +355,7 @@
         </div>
     </div>
 
-    <!-- Custom Confirmation Modal for Resetting Today's Progress (No confirm() used) -->
+    <!-- Custom Confirmation Modal for Resetting Today's Progress -->
     <div id="reset-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
         <div class="bg-white dark:bg-slate-800 rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 text-center">
             <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl">
@@ -391,10 +366,10 @@
                 এতে আপনার আজকের ৫ ওয়াক্ত নামাজের টিক চিহ্ন এবং তসবির গণনা ০ হয়ে যাবে। তবে আপনার তৈরি করা কাস্টম আমলের তালিকা ঠিক থাকবে।
             </p>
             <div class="flex items-center gap-3">
-                <button onclick="closeResetModal()" class="flex-1 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-sm hover:bg-slate-200 transition">
+                <button type="button" onclick="closeResetModal()" class="flex-1 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-sm hover:bg-slate-200 transition">
                     বাতিল
                 </button>
-                <button onclick="confirmResetDay()" class="flex-1 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm shadow-md transition">
+                <button type="button" onclick="confirmResetDay()" class="flex-1 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm shadow-md transition">
                     হ্যাঁ, রিসেট করুন
                 </button>
             </div>
@@ -409,70 +384,366 @@
             return num.toString().replace(/\d/g, d => bengaliDigits[d]);
         }
 
-        // --- Default Data Structure ---
+        // --- Default Data Structure (Farz, Sunnah, Nafl, and Witr separated) ---
         const defaultPrayers = [
-            { id: 'fajr', name: 'ফজর', time: 'ভোর', fardRakats: 2, fullRakats: 4, rakatDescFull: '২ সুন্নত + ২ ফরজ', rakatDescFard: '২ রাকাত ফরজ', completed: false },
-            { id: 'dhuhr', name: 'যোহর', time: 'দুপুর', fardRakats: 4, fullRakats: 12, rakatDescFull: '৪ সুন্নত + ৪ ফরজ + ২ সুন্নত + ২ নফল', rakatDescFard: '৪ রাকাত ফরজ', completed: false },
-            { id: 'asr', name: 'আসর', time: 'বিকেল', fardRakats: 4, fullRakats: 8, rakatDescFull: '৪ সুন্নত + ৪ ফরজ', rakatDescFard: '৪ রাকাত ফরজ', completed: false },
-            { id: 'maghrib', name: 'মাগরিব', time: 'সন্ধ্যা', fardRakats: 3, fullRakats: 7, rakatDescFull: '৩ ফরজ + ২ সুন্নত + ২ নফল', rakatDescFard: '৩ রাকাত ফরজ', completed: false },
-            { id: 'isha', name: 'এশা', time: 'রাত', fardRakats: 4, fullRakats: 15, rakatDescFull: '৪ সুন্নত + ৪ ফরজ + ২ সুন্নত + ২ নফল + ৩ বিতর', rakatDescFard: '৪ রাকাত ফরজ', completed: false }
+            {
+                id: 'fajr',
+                name: 'ফজর',
+                time: 'ভোর',
+                fardRakats: 2,
+                sunnahRakats: 2,
+                naflRakats: 0,
+                witrRakats: 0,
+                parts: { fard: false, sunnah: false, nafl: false, witr: false }
+            },
+            {
+                id: 'dhuhr',
+                name: 'যোহর',
+                time: 'দুপুর',
+                fardRakats: 4,
+                sunnahRakats: 6,
+                naflRakats: 2,
+                witrRakats: 0,
+                parts: { fard: false, sunnah: false, nafl: false, witr: false }
+            },
+            {
+                id: 'asr',
+                name: 'আসর',
+                time: 'বিকেল',
+                fardRakats: 4,
+                sunnahRakats: 0,
+                naflRakats: 0,
+                witrRakats: 0,
+                parts: { fard: false, sunnah: false, nafl: false, witr: false }
+            },
+            {
+                id: 'maghrib',
+                name: 'মাগরিব',
+                time: 'সন্ধ্যা',
+                fardRakats: 3,
+                sunnahRakats: 2,
+                naflRakats: 2,
+                witrRakats: 0,
+                parts: { fard: false, sunnah: false, nafl: false, witr: false }
+            },
+            {
+                id: 'isha',
+                name: 'এশা',
+                time: 'রাত',
+                fardRakats: 4,
+                sunnahRakats: 4,
+                naflRakats: 2,
+                witrRakats: 3,
+                parts: { fard: false, sunnah: false, nafl: false, witr: false }
+            }
         ];
 
         const defaultAmals = [
-            { id: 'allahuakbar_1', name: 'আল্লাহু আকবার', arabic: 'اللَّهُ أَكْبَرُ', target: 1, count: 0, isDefault: true },
-            { id: 'astaghfirullah_3', name: 'আস্তাগফিরুল্লাহ', arabic: 'أَسْتَغْفِرُ اللَّهَ', target: 3, count: 0, isDefault: true },
-            { id: 'allahumma_antas_salam', name: 'আল্লাহুম্মা আনতাস সালামু ওয়া মিনকাস সালামু, তাবারাকতা ইয়া যাল-জালালি ওয়াল ইকরাম', arabic: 'اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ، تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ', target: 1, count: 0, isDefault: true },
-            { id: 'allahumma_ainni', name: 'আল্লাহুম্মা আ-ইন্নি আলা যিকরিকা ওয়া শুকরিকা ওয়া হুসনি ইবাদাতিকা', arabic: 'اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ', target: 1, count: 0, isDefault: true },
-            { id: 'ayatul_kursi', name: 'আয়াতুল কুরসি', arabic: 'اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...', target: 1, count: 0, isDefault: true },
-            { id: 'sayyidul_istighfar', name: 'সাইয়েদুল ইস্তেগফার', arabic: 'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ...', target: 1, count: 0, isDefault: true },
-            { id: 'subhanallah_33', name: 'সুবহানাল্লাহ', arabic: 'سُبْحَانَ اللَّهِ', target: 33, count: 0, isDefault: true },
-            { id: 'alhamdulillah_33', name: 'আলহামদুলিল্লাহ', arabic: 'الْحَمْدُ لِلَّهِ', target: 33, count: 0, isDefault: true },
-            { id: 'allahuakbar_33', name: 'আল্লাহু আকবার', arabic: 'اللَّهُ أَكْبَرُ', target: 33, count: 0, isDefault: true },
-            { id: 'la_ilaha_illallahu_wahdahu_1', name: 'লা ইলাহা ইল্লাল্লাহু ওয়াহদাহু লা শারিকালাহু লাহুল মুলকু ওয়া লাহুল হামদু ওয়া হুয়া আলা কুল্লি শাইয়িন কাদির', arabic: 'لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ', target: 1, count: 0, isDefault: true },
-            { id: 'astaghfirullah_100', name: 'আস্তাগফিরুল্লাহ', arabic: 'أَسْتَغْفِرُ اللَّهَ', target: 100, count: 0, isDefault: true },
-            { id: 'durud_sharif_100', name: 'দরুদ শরীফ', arabic: 'اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ', target: 100, count: 0, isDefault: true },
-            { id: 'subhanallahi_wa_bihamdihi_100', name: 'সুবহানাল্লাহি ওয়া বিহামদিহি', arabic: 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ', target: 100, count: 0, isDefault: true },
-            { id: 'la_ilaha_illallah_100', name: 'লা ইলাহা ইল্লাল্লাহ', arabic: 'لَا إِلَهَ إِلَّا اللَّهُ', target: 100, count: 0, isDefault: true },
-            { id: 'subhanallah_100', name: 'সুবহানাল্লাহ', arabic: 'سُبْحَانَ اللَّهِ', target: 100, count: 0, isDefault: true },
-            { id: 'alhamdulillah_100', name: 'আলহামদুলিল্লাহ', arabic: 'الْحَمْدُ لِلَّهِ', target: 100, count: 0, isDefault: true },
-            { id: 'allahuakbar_100', name: 'আল্লাহু আকবার', arabic: 'اللَّهُ أَكْبَرُ', target: 100, count: 0, isDefault: true }
+            {
+                id: 'takbir_post_salah_1',
+                name: 'আল্লাহু আকবার (নামাজ শেষে)',
+                arabic: 'اللَّهُ أَكْبَرُ',
+                target: 1,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'istighfar_post_salah_3',
+                name: 'আস্তাগফিরুল্লাহ (নামাজ শেষে)',
+                arabic: 'أَسْتَغْفِرُ اللَّهَ',
+                target: 3,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'allahumma_antas_salam_1',
+                name: 'আল্লাহুম্মা আনতাস সালামু ওয়া মিনকাস সালামু...',
+                arabic: 'اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ، تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ',
+                target: 1,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'allahumma_ainni_1',
+                name: 'আল্লাহুম্মা আ-ইন্নি আলা যিকরিকা...',
+                arabic: 'اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ',
+                target: 1,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'ayatul_kursi_1',
+                name: 'আয়াতুল কুরসি',
+                arabic: 'اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...',
+                target: 1,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'sayyidul_istighfar_1',
+                name: 'সাইয়েদুল ইস্তেগফার',
+                arabic: 'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ...',
+                target: 1,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'subhanallah_33',
+                name: 'সুবহানাল্লাহ',
+                arabic: 'سُبْحَانَ اللَّهِ',
+                target: 33,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'alhamdulillah_33',
+                name: 'আলহামদুলিল্লাহ',
+                arabic: 'الْحَمْدُ لِلَّهِ',
+                target: 33,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'allahuakbar_33',
+                name: 'আল্লাহু আকবার',
+                arabic: 'اللَّهُ أَكْبَرُ',
+                target: 33,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'la_ilaha_illallahu_wahdahu_1',
+                name: 'লা ইলাহা ইল্লাল্লাহু ওয়াহদাহু লা শারিকালাহু...',
+                arabic: 'لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ',
+                target: 1,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'istighfar_100',
+                name: 'আস্তাগফিরুল্লাহ',
+                arabic: 'أَسْتَغْفِرُ اللَّهَ',
+                target: 100,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'durud_sharif_100',
+                name: 'দরুদ শরীফ',
+                arabic: 'اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ',
+                target: 100,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'subhanallahi_wa_bihamdihi_100',
+                name: 'সুবহানাল্লাহি ওয়া বিহামদিহি',
+                arabic: 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ',
+                target: 100,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'la_ilaha_illallah_100',
+                name: 'লা ইলাহা ইল্লাল্লাহ',
+                arabic: 'لَا إِلَهَ إِلَّا اللَّهُ',
+                target: 100,
+                count: 0,
+                isDefault: true
+            }
         ];
+
+        // Migrate legacy prayer objects into separate parts safely
+        function normalizePrayers(prayersList) {
+            const source = Array.isArray(prayersList) && prayersList.length > 0 ? prayersList : defaultPrayers;
+            return defaultPrayers.map(def => {
+                const existing = source.find(item => item.id === def.id);
+                if (!existing) {
+                    return JSON.parse(JSON.stringify(def));
+                }
+                const hasParts = existing.parts && typeof existing.parts === 'object';
+                const fardDone = hasParts ? Boolean(existing.parts.fard) : Boolean(existing.completed);
+                const sunnahDone = (def.sunnahRakats > 0 && hasParts) ? Boolean(existing.parts.sunnah) : false;
+                const naflDone = (def.naflRakats > 0 && hasParts) ? Boolean(existing.parts.nafl) : false;
+                const witrDone = (def.witrRakats > 0 && hasParts) ? Boolean(existing.parts.witr) : false;
+
+                return {
+                    ...JSON.parse(JSON.stringify(def)),
+                    parts: {
+                        fard: fardDone,
+                        sunnah: sunnahDone,
+                        nafl: naflDone,
+                        witr: witrDone
+                    }
+                };
+            });
+        }
 
         // --- App State ---
         let state = {
-            dateKey: new Date().toLocaleDateString('en-CA'), // YYYY-MM-DD
+            dateKey: new Date().toLocaleDateString('en-CA'),
             rakatMode: 'full', // 'full' or 'fard'
             soundEnabled: true,
             darkMode: false,
-            activeAmalId: 'allahuakbar_1',
+            activeAmalId: 'subhanallah_1',
             prayers: JSON.parse(JSON.stringify(defaultPrayers)),
             amals: JSON.parse(JSON.stringify(defaultAmals))
         };
+
+        function getPrayerRakats(prayer, mode = state.rakatMode) {
+            if (!prayer || !prayer.parts) return 0;
+            let total = 0;
+            if (prayer.parts.fard) total += prayer.fardRakats;
+            if (mode === 'full') {
+                if (prayer.parts.sunnah && prayer.sunnahRakats > 0) total += prayer.sunnahRakats;
+                if (prayer.parts.nafl && prayer.naflRakats > 0) total += prayer.naflRakats;
+                if (prayer.parts.witr && prayer.witrRakats > 0) total += prayer.witrRakats;
+            }
+            return total;
+        }
+
+        function getPrayerCompletionFraction(prayer, mode = state.rakatMode) {
+            if (!prayer || !prayer.parts) return 0;
+            if (mode === 'fard') {
+                return prayer.parts.fard ? 1 : 0;
+            }
+            const activeTabs = ['fard'];
+            if (prayer.sunnahRakats > 0) activeTabs.push('sunnah');
+            if (prayer.naflRakats > 0) activeTabs.push('nafl');
+            if (prayer.witrRakats > 0) activeTabs.push('witr');
+
+            const doneCount = activeTabs.filter(tab => Boolean(prayer.parts[tab])).length;
+            return activeTabs.length > 0 ? doneCount / activeTabs.length : 0;
+        }
 
         // --- Sound Synthesizer (Tone.js) ---
         let synth = null;
         function playTapSound(isComplete = false) {
             if (!state.soundEnabled) return;
             try {
-                if (!synth) {
+                if (!synth && typeof Tone !== 'undefined') {
                     synth = new Tone.Synth({
                         oscillator: { type: 'sine' },
                         envelope: { attack: 0.005, decay: 0.08, sustain: 0, release: 0.08 }
                     }).toDestination();
                     synth.volume.value = -12;
                 }
-                if (Tone.context.state !== 'running') {
-                    Tone.start();
-                }
-                if (isComplete) {
-                    synth.triggerAttackRelease('C6', '16n');
-                    setTimeout(() => synth.triggerAttackRelease('E6', '16n'), 100);
-                } else {
-                    synth.triggerAttackRelease('G5', '32n');
+                if (synth && typeof Tone !== 'undefined') {
+                    if (Tone.context.state !== 'running') {
+                        Tone.start();
+                    }
+                    if (isComplete) {
+                        synth.triggerAttackRelease('C6', '16n');
+                        setTimeout(() => synth.triggerAttackRelease('E6', '16n'), 100);
+                    } else {
+                        synth.triggerAttackRelease('G5', '32n');
+                    }
                 }
             } catch (e) {
                 // Ignore audio context errors if blocked
             }
+        }
+
+        // --- Date & Theme / Sound Controls ---
+        function formatArabicHijriDate(dateObj) {
+            try {
+                // Use Islamic Umm al-Qura calendar formatted in Bengali digits/month names without prefix label
+                const formatter = new Intl.DateTimeFormat('bn-BD-u-ca-islamic-umalqura', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+                return `${formatter.format(dateObj)} হিজরি`;
+            } catch (e) {
+                return `${toBengaliNumber(dateObj.getDate())} হিজরি`;
+            }
+        }
+
+        function formatBanglaDate(dateObj) {
+            try {
+                // Use Bengali calendar via Intl without prefix label
+                const formatter = new Intl.DateTimeFormat('bn-BD-u-ca-bengali', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+                return `${formatter.format(dateObj)} বঙ্গাব্দ`;
+            } catch (e) {
+                return `${toBengaliNumber(dateObj.getDate())} বঙ্গাব্দ`;
+            }
+        }
+
+        function formatEnglishDate(dateObj) {
+            try {
+                // Format Gregorian date in Bangla language without prefix label
+                const formatter = new Intl.DateTimeFormat('bn-BD', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+                return formatter.format(dateObj);
+            } catch (e) {
+                return toBengaliNumber(dateObj.getDate());
+            }
+        }
+
+        function updateDateDisplay() {
+            const el = document.getElementById('current-date-display');
+            if (!el) return;
+            const now = new Date();
+            try {
+                const arabicLine = formatArabicHijriDate(now);
+                const banglaLine = formatBanglaDate(now);
+                const englishLine = formatEnglishDate(now);
+
+                el.innerHTML = `
+                    <div class="text-emerald-700 dark:text-emerald-300 font-semibold">${arabicLine}</div>
+                    <div class="text-slate-600 dark:text-slate-300">${banglaLine}</div>
+                    <div class="text-slate-500 dark:text-slate-400">${englishLine}</div>
+                `;
+            } catch (e) {
+                el.innerHTML = `
+                    <div>${toBengaliNumber(now.getDate())} হিজরি</div>
+                    <div>${toBengaliNumber(now.getDate())} বঙ্গাব্দ</div>
+                    <div>${toBengaliNumber(now.getDate())}</div>
+                `;
+            }
+        }
+
+        function applyThemeAndSoundUI() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            if (state.darkMode) {
+                html.classList.add('dark');
+                html.classList.remove('light');
+                if (themeIcon) themeIcon.className = 'fa-solid fa-sun text-sm text-amber-400';
+            } else {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                if (themeIcon) themeIcon.className = 'fa-solid fa-moon text-sm';
+            }
+
+            const soundIcon = document.getElementById('sound-icon');
+            if (soundIcon) {
+                soundIcon.className = state.soundEnabled
+                    ? 'fa-solid fa-volume-high text-sm text-emerald-600 dark:text-emerald-400'
+                    : 'fa-solid fa-volume-xmark text-sm text-slate-400';
+            }
+        }
+
+        function toggleDarkMode() {
+            state.darkMode = !state.darkMode;
+            applyThemeAndSoundUI();
+            saveState();
+        }
+
+        function toggleSound() {
+            state.soundEnabled = !state.soundEnabled;
+            applyThemeAndSoundUI();
+            saveState();
+            showToast(state.soundEnabled ? 'তসবি সাউন্ড চালু করা হয়েছে' : 'তসবি সাউন্ড বন্ধ করা হয়েছে');
         }
 
         // --- LocalStorage Management ---
@@ -481,14 +752,22 @@
                 const saved = localStorage.getItem('amalnama_app_state_v1');
                 if (saved) {
                     const parsed = JSON.parse(saved);
-                    state = { ...state, ...parsed };
+                    state = {
+                        ...state,
+                        ...parsed,
+                        amals: Array.isArray(parsed.amals) && parsed.amals.length > 0
+                            ? parsed.amals
+                            : JSON.parse(JSON.stringify(defaultAmals))
+                    };
+                    state.prayers = normalizePrayers(state.prayers);
 
-                    // Check if it's a new calendar day; if so, prompt or auto-reset daily counts while preserving custom amals
                     const todayKey = new Date().toLocaleDateString('en-CA');
                     if (state.dateKey !== todayKey) {
                         state.dateKey = todayKey;
-                        state.prayers.forEach(p => p.completed = false);
-                        state.amals.forEach(a => a.count = 0);
+                        state.prayers.forEach(p => {
+                            p.parts = { fard: false, sunnah: false, nafl: false, witr: false };
+                        });
+                        state.amals.forEach(a => { a.count = 0; });
                         saveState();
                         showToast('নতুন দিনের আমল শুরু হয়েছে!');
                     }
@@ -506,65 +785,7 @@
             }
         }
 
-        // --- Initialization ---
-        window.onload = function () {
-            loadState();
-            applyTheme();
-            updateSoundIcon();
-            displayCurrentDate();
-            renderAll();
-        };
-
-        function displayCurrentDate() {
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const bnDate = new Date().toLocaleDateString('bn-BD', options);
-            document.getElementById('current-date-display').textContent = bnDate;
-        }
-
-        // --- Theme & Sound Controls ---
-        function toggleDarkMode() {
-            state.darkMode = !state.darkMode;
-            applyTheme();
-            saveState();
-        }
-
-        function applyTheme() {
-            const html = document.documentElement;
-            const icon = document.getElementById('theme-icon');
-            if (state.darkMode) {
-                html.classList.add('dark');
-                icon.className = 'fa-solid fa-sun text-sm';
-                icon.style.color = '#FF3D00';
-            } else {
-                html.classList.remove('dark');
-                icon.className = 'fa-solid fa-moon text-sm';
-                icon.style.color = '';
-            }
-        }
-
-        function toggleSound() {
-            state.soundEnabled = !state.soundEnabled;
-            updateSoundIcon();
-            saveState();
-            showToast(state.soundEnabled ? 'তসবির শব্দ চালু করা হয়েছে' : 'তসবির শব্দ বন্ধ করা হয়েছে');
-        }
-
-        function updateSoundIcon() {
-            const icon = document.getElementById('sound-icon');
-            icon.className = state.soundEnabled
-                ? 'fa-solid fa-volume-high text-emerald-600 dark:text-emerald-400 text-sm'
-                : 'fa-solid fa-volume-xmark text-slate-400 text-sm';
-        }
-
-        // --- Render All Components ---
-        function renderAll() {
-            renderPrayers();
-            renderActiveTasbih();
-            renderAmalsList();
-            updateDashboardStats();
-        }
-
-        // --- 1. Render 5 Daily Prayers ---
+        // --- 1. Render 5 Daily Prayers with Separate Farz, Sunnah, Nafl & Witr Tabs ---
         function setRakatMode(mode) {
             state.rakatMode = mode;
             saveState();
@@ -572,22 +793,39 @@
             updateDashboardStats();
         }
 
-        function togglePrayer(prayerId) {
-            const prayer = state.prayers.find(p => p.id === prayerId);
-            if (!prayer) return;
-            prayer.completed = !prayer.completed;
+        function togglePrayerPart(prayerId, partKey) {
+            try {
+                const prayer = state.prayers.find(p => p.id === prayerId);
+                if (!prayer || !prayer.parts) return;
+                if (partKey === 'sunnah' && prayer.sunnahRakats <= 0) return;
+                if (partKey === 'nafl' && prayer.naflRakats <= 0) return;
+                if (partKey === 'witr' && prayer.witrRakats <= 0) return;
 
-            if (prayer.completed) {
-                playTapSound(true);
-                if (navigator.vibrate) navigator.vibrate(40);
-                showToast(`${prayer.name} নামাজ সম্পন্ন হিসেবে চিহ্নিত হয়েছে`);
-            } else {
-                playTapSound(false);
+                prayer.parts[partKey] = !prayer.parts[partKey];
+                const isNowChecked = prayer.parts[partKey];
+
+                const partLabelMap = {
+                    fard: 'ফরজ',
+                    sunnah: 'সুন্নত',
+                    nafl: 'নফল',
+                    witr: 'বিতর'
+                };
+                const labelText = partLabelMap[partKey] || partKey;
+
+                if (isNowChecked) {
+                    playTapSound(partKey === 'fard');
+                    if (navigator.vibrate) navigator.vibrate(35);
+                    showToast(`${prayer.name}-এর ${labelText} সম্পন্ন হিসেবে চিহ্নিত হয়েছে`);
+                } else {
+                    playTapSound(false);
+                }
+
+                saveState();
+                renderPrayers();
+                updateDashboardStats();
+            } catch (err) {
+                console.error('Error toggling prayer part:', err);
             }
-
-            saveState();
-            renderPrayers();
-            updateDashboardStats();
         }
 
         function renderPrayers() {
@@ -604,46 +842,129 @@
             }
 
             container.innerHTML = state.prayers.map(prayer => {
-                const rakats = state.rakatMode === 'full' ? prayer.fullRakats : prayer.fardRakats;
-                const desc = state.rakatMode === 'full' ? prayer.rakatDescFull : prayer.rakatDescFard;
+                const rakatsDone = getPrayerRakats(prayer, state.rakatMode);
+                const maxRakats = state.rakatMode === 'full'
+                    ? (prayer.fardRakats + prayer.sunnahRakats + prayer.naflRakats + prayer.witrRakats)
+                    : prayer.fardRakats;
+                const isFarzDone = Boolean(prayer.parts.fard);
+                const isSunnahDone = Boolean(prayer.parts.sunnah);
+                const isNaflDone = Boolean(prayer.parts.nafl);
+                const isWitrDone = Boolean(prayer.parts.witr);
+
+                const tabCount = 1
+                    + (prayer.sunnahRakats > 0 ? 1 : 0)
+                    + (prayer.naflRakats > 0 ? 1 : 0)
+                    + (prayer.witrRakats > 0 ? 1 : 0);
+
+                const gridColsClass = tabCount === 4
+                    ? 'grid-cols-2 sm:grid-cols-4'
+                    : tabCount === 3
+                        ? 'grid-cols-3'
+                        : tabCount === 2
+                            ? 'grid-cols-2'
+                            : 'grid-cols-1';
 
                 return `
-                <div onclick="togglePrayer('${prayer.id}')" class="group cursor-pointer flex items-center justify-between p-3.5 rounded-2xl border transition-all select-none ${
-                    prayer.completed
-                    ? 'bg-emerald-50/90 dark:bg-emerald-950/40 border-emerald-400/70 dark:border-emerald-700'
-                    : 'bg-slate-50/70 dark:bg-slate-900/50 border-slate-200/80 dark:border-slate-700/70 hover:border-emerald-300 dark:hover:border-emerald-700'
+                <div class="p-3.5 rounded-2xl border transition-all ${
+                    isFarzDone
+                    ? 'bg-emerald-50/70 dark:bg-emerald-950/30 border-emerald-300/80 dark:border-emerald-800'
+                    : 'bg-slate-50/70 dark:bg-slate-900/50 border-slate-200/80 dark:border-slate-700/70'
                 }">
-                    <div class="flex items-center gap-3.5">
-                        <!-- Custom Checkbox -->
-                        <div class="w-7 h-7 rounded-xl flex items-center justify-center transition-all ${
-                            prayer.completed
-                            ? 'bg-emerald-600 text-white shadow-sm shadow-emerald-600/30'
-                            : 'bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 group-hover:border-emerald-500'
-                        }">
-                            ${prayer.completed ? '<i class="fa-solid fa-check text-sm"></i>' : ''}
+                    <!-- Top Row: Prayer Name, Time & Rakats Counter -->
+                    <div class="flex items-center justify-between gap-2 mb-2.5">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-base ${isFarzDone ? 'text-emerald-900 dark:text-emerald-300' : 'text-slate-800 dark:text-slate-100'}">
+                                ${prayer.name}
+                            </span>
+                            <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-200/70 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+                                ${prayer.time}
+                            </span>
                         </div>
 
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <span class="font-bold text-base ${prayer.completed ? 'text-emerald-900 dark:text-emerald-300' : 'text-slate-800 dark:text-slate-100'}">
-                                    ${prayer.name}
-                                </span>
-                                <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-200/70 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
-                                    ${prayer.time}
-                                </span>
-                            </div>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">${desc}</p>
-                        </div>
-                    </div>
-
-                    <div class="text-right">
                         <span class="inline-block px-2.5 py-1 rounded-xl text-xs font-bold ${
-                            prayer.completed
+                            rakatsDone > 0
                             ? 'bg-emerald-600/15 text-emerald-700 dark:text-emerald-300'
                             : 'bg-slate-200/60 dark:bg-slate-700/60 text-slate-600 dark:text-slate-300'
                         }">
-                            ${toBengaliNumber(rakats)} রাকাত
+                            ${toBengaliNumber(rakatsDone)} / ${toBengaliNumber(maxRakats)} রাকাত
                         </span>
+                    </div>
+
+                    <!-- Separate Tabs Row: Farz, Sunnah, Nafl & Witr -->
+                    <div class="grid ${gridColsClass} gap-2">
+                        <!-- Farz Tab -->
+                        <button type="button" onclick="togglePrayerPart('${prayer.id}', 'fard')" class="flex items-center justify-between px-2.5 py-2 rounded-xl border text-left transition select-none ${
+                            isFarzDone
+                            ? 'bg-emerald-600 border-emerald-600 text-white shadow-sm'
+                            : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-emerald-400'
+                        }">
+                            <div class="min-w-0">
+                                <div class="text-xs font-bold leading-tight">ফরজ</div>
+                                <div class="text-[10px] ${isFarzDone ? 'text-emerald-100' : 'text-slate-400'}">${toBengaliNumber(prayer.fardRakats)} রাকাত</div>
+                            </div>
+                            <span class="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 ${
+                                isFarzDone ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-700 text-transparent'
+                            }">
+                                <i class="fa-solid fa-check text-[10px]"></i>
+                            </span>
+                        </button>
+
+                        ${prayer.sunnahRakats > 0 ? `
+                        <!-- Sunnah Tab -->
+                        <button type="button" onclick="togglePrayerPart('${prayer.id}', 'sunnah')" class="flex items-center justify-between px-2.5 py-2 rounded-xl border text-left transition select-none ${
+                            isSunnahDone
+                            ? 'bg-emerald-700 border-emerald-700 text-white shadow-sm'
+                            : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-emerald-400'
+                        }">
+                            <div class="min-w-0">
+                                <div class="text-xs font-bold leading-tight">সুন্নত</div>
+                                <div class="text-[10px] ${isSunnahDone ? 'text-emerald-100' : 'text-slate-400'}">${toBengaliNumber(prayer.sunnahRakats)} রাকাত</div>
+                            </div>
+                            <span class="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 ${
+                                isSunnahDone ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-700 text-transparent'
+                            }">
+                                <i class="fa-solid fa-check text-[10px]"></i>
+                            </span>
+                        </button>
+                        ` : ''}
+
+                        ${prayer.naflRakats > 0 ? `
+                        <!-- Nafl Tab -->
+                        <button type="button" onclick="togglePrayerPart('${prayer.id}', 'nafl')" class="flex items-center justify-between px-2.5 py-2 rounded-xl border text-left transition select-none ${
+                            isNaflDone
+                            ? 'bg-emerald-800 border-emerald-800 text-white shadow-sm'
+                            : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-emerald-400'
+                        }">
+                            <div class="min-w-0">
+                                <div class="text-xs font-bold leading-tight truncate">নফল</div>
+                                <div class="text-[10px] ${isNaflDone ? 'text-emerald-100' : 'text-slate-400'}">${toBengaliNumber(prayer.naflRakats)} রাকাত</div>
+                            </div>
+                            <span class="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 ${
+                                isNaflDone ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-700 text-transparent'
+                            }">
+                                <i class="fa-solid fa-check text-[10px]"></i>
+                            </span>
+                        </button>
+                        ` : ''}
+
+                        ${prayer.witrRakats > 0 ? `
+                        <!-- Witr Tab -->
+                        <button type="button" onclick="togglePrayerPart('${prayer.id}', 'witr')" class="flex items-center justify-between px-2.5 py-2 rounded-xl border text-left transition select-none ${
+                            isWitrDone
+                            ? 'bg-emerald-900 border-emerald-900 text-white shadow-sm'
+                            : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-emerald-400'
+                        }">
+                            <div class="min-w-0">
+                                <div class="text-xs font-bold leading-tight truncate">বিতর</div>
+                                <div class="text-[10px] ${isWitrDone ? 'text-emerald-100' : 'text-slate-400'}">${toBengaliNumber(prayer.witrRakats)} রাকাত</div>
+                            </div>
+                            <span class="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 ${
+                                isWitrDone ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-700 text-transparent'
+                            }">
+                                <i class="fa-solid fa-check text-[10px]"></i>
+                            </span>
+                        </button>
+                        ` : ''}
                     </div>
                 </div>
                 `;
@@ -667,7 +988,6 @@
             renderAmalsList();
         }
 
-        // Automatically moves selection to the next incomplete amal if available
         function advanceToNextIncomplete(currentId = null) {
             try {
                 if (!Array.isArray(state.amals) || state.amals.length === 0) return;
@@ -676,7 +996,6 @@
                     ? state.amals.findIndex(a => a.id === currentId)
                     : state.amals.findIndex(a => a.id === state.activeAmalId);
 
-                // Search after the current amal first, then wrap around from the start
                 for (let offset = 1; offset <= state.amals.length; offset++) {
                     const idx = (Math.max(0, startIndex) + offset) % state.amals.length;
                     const candidate = state.amals[idx];
@@ -816,8 +1135,7 @@
                 }">
                     <div class="flex items-center justify-between gap-3">
                         <div class="flex items-center gap-3 min-w-0">
-                            <!-- Direct Quick Check-off Button -->
-                            <button onclick="toggleAmalCompleteCheck(event, '${amal.id}')" title="সরাসরি সম্পন্ন টিক দিন" class="w-7 h-7 flex-shrink-0 rounded-xl flex items-center justify-center transition ${
+                            <button type="button" onclick="toggleAmalCompleteCheck(event, '${amal.id}')" title="সরাসরি সম্পন্ন টিক দিন" class="w-7 h-7 flex-shrink-0 rounded-xl flex items-center justify-center transition ${
                                 isDone
                                 ? 'bg-emerald-600 text-white shadow-sm'
                                 : 'bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 hover:border-emerald-500'
@@ -840,19 +1158,16 @@
                         </div>
 
                         <div class="flex items-center gap-2 flex-shrink-0">
-                            <!-- Quick +1 button right from list -->
-                            <button onclick="event.stopPropagation(); selectActiveAmal('${amal.id}'); incrementActiveAmal();" class="px-2.5 py-1.5 rounded-xl bg-emerald-600/10 hover:bg-emerald-600 text-emerald-700 dark:text-emerald-300 hover:text-white text-xs font-bold transition">
+                            <button type="button" onclick="event.stopPropagation(); selectActiveAmal('${amal.id}'); incrementActiveAmal();" class="px-2.5 py-1.5 rounded-xl bg-emerald-600/10 hover:bg-emerald-600 text-emerald-700 dark:text-emerald-300 hover:text-white text-xs font-bold transition">
                                 +১
                             </button>
 
-                            <!-- Delete custom amal -->
-                            <button onclick="deleteAmal(event, '${amal.id}')" title="মুছে ফেলুন" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition">
+                            <button type="button" onclick="deleteAmal(event, '${amal.id}')" title="মুছে ফেলুন" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition">
                                 <i class="fa-solid fa-trash-can text-xs"></i>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Individual Progress Bar -->
                     <div class="w-full bg-slate-200/80 dark:bg-slate-700 h-1.5 rounded-full mt-2.5 overflow-hidden">
                         <div class="h-full rounded-full transition-all duration-300 ${isDone ? 'bg-emerald-500' : ''}" style="width: ${pct}%; ${!isDone ? 'background-color: #FF3D00;' : ''}"></div>
                     </div>
@@ -921,63 +1236,68 @@
 
         // --- 3. Overall Dashboard Progress & Report Calculation ---
         function updateDashboardStats() {
-            // Calculate Prayer stats
             const totalPrayers = state.prayers.length;
-            const completedPrayers = state.prayers.filter(p => p.completed).length;
+            const completedPrayers = state.prayers.filter(p => Boolean(p.parts && p.parts.fard)).length;
 
             let totalRakatsToday = 0;
+            let prayerFractionSum = 0;
+
             state.prayers.forEach(p => {
-                if (p.completed) {
-                    totalRakatsToday += (state.rakatMode === 'full' ? p.fullRakats : p.fardRakats);
-                }
+                totalRakatsToday += getPrayerRakats(p, state.rakatMode);
+                prayerFractionSum += getPrayerCompletionFraction(p, state.rakatMode);
             });
 
-            const prayerPercent = Math.round((completedPrayers / totalPrayers) * 100);
-            document.getElementById('prayer-section-percent').textContent = `${toBengaliNumber(prayerPercent)}% (${toBengaliNumber(totalRakatsToday)} রাকাত)`;
+            const prayerPercent = Math.round((prayerFractionSum / totalPrayers) * 100);
+            const prayerSectionPercentEl = document.getElementById('prayer-section-percent');
+            if (prayerSectionPercentEl) {
+                prayerSectionPercentEl.textContent = `${toBengaliNumber(prayerPercent)}% (${toBengaliNumber(totalRakatsToday)} রাকাত)`;
+            }
 
-            // Calculate Amal/Tasbih stats
             const totalAmals = state.amals.length;
             const completedAmalsCount = state.amals.filter(a => a.count >= a.target).length;
 
-            // Fractional progress across all amals so every single tasbih tap increases overall percentage smoothly!
             let amalProgressSum = 0;
             state.amals.forEach(a => {
                 amalProgressSum += Math.min(1, a.count / a.target);
             });
 
-            // Combined Overall Percentage (Weighted equally across all 5 prayers + all active amals)
             const totalItems = totalPrayers + totalAmals;
-            const completedItemsEquivalent = completedPrayers + amalProgressSum;
+            const completedItemsEquivalent = prayerFractionSum + amalProgressSum;
             const overallPercent = totalItems > 0 ? Math.round((completedItemsEquivalent / totalItems) * 100) : 0;
 
-            // Update Top Summary Cards
-            document.getElementById('total-rakats-display').textContent = toBengaliNumber(totalRakatsToday);
-            document.getElementById('prayers-completed-display').textContent = `${toBengaliNumber(completedPrayers)} / ${toBengaliNumber(totalPrayers)}`;
-            document.getElementById('amals-completed-display').textContent = `${toBengaliNumber(completedAmalsCount)} / ${toBengaliNumber(totalAmals)}`;
-
-            // Update Circular Progress Ring
-            document.getElementById('overall-percentage-text').textContent = `${toBengaliNumber(overallPercent)}%`;
+            const totalRakatsEl = document.getElementById('total-rakats-display');
+            const prayersCompletedEl = document.getElementById('prayers-completed-display');
+            const amalsCompletedEl = document.getElementById('amals-completed-display');
+            const overallPctEl = document.getElementById('overall-percentage-text');
             const circle = document.getElementById('overall-progress-ring');
-            const circumference = 2 * Math.PI * 50; // r = 50 -> 314.16
-            const offset = circumference - (overallPercent / 100) * circumference;
-            circle.style.strokeDashoffset = offset;
-
-            // Dynamic Motivational Header
             const titleEl = document.getElementById('motivational-title');
             const subEl = document.getElementById('motivational-subtitle');
 
-            if (overallPercent === 100) {
-                titleEl.textContent = 'আলহামদুলিল্লাহ! আজকের সব আমল পূর্ণ হয়েছে';
-                subEl.textContent = 'মহান আল্লাহ তাআলা আপনার সকল ইবাদত ও জিকির কবুল করুন। আমিন।';
-            } else if (overallPercent >= 60) {
-                titleEl.textContent = 'মাশাআল্লাহ! দারুণ অগ্রগতি হয়েছে';
-                subEl.textContent = `আপনি ইতিমধ্যে আজকের ${toBengaliNumber(overallPercent)}% আমল সম্পন্ন করেছেন। বাকিগুলোও পূর্ণ করুন।`;
-            } else if (overallPercent > 0) {
-                titleEl.textContent = 'বরকতময় শুরু হয়েছে!';
-                subEl.textContent = `আজ মোট ${toBengaliNumber(totalRakatsToday)} রাকাত নামাজ ও ${toBengaliNumber(completedAmalsCount)}টি আমল পূর্ণ হয়েছে।`;
-            } else {
-                titleEl.textContent = 'আল্লাহ আপনার আমল কবুল করুন';
-                subEl.textContent = 'আজকের নির্ধারিত নামাজ ও জিকিরগুলো সম্পন্ন করে টিক চিহ্ন দিন।';
+            if (totalRakatsEl) totalRakatsEl.textContent = toBengaliNumber(totalRakatsToday);
+            if (prayersCompletedEl) prayersCompletedEl.textContent = `${toBengaliNumber(completedPrayers)} / ${toBengaliNumber(totalPrayers)}`;
+            if (amalsCompletedEl) amalsCompletedEl.textContent = `${toBengaliNumber(completedAmalsCount)} / ${toBengaliNumber(totalAmals)}`;
+
+            if (overallPctEl) overallPctEl.textContent = `${toBengaliNumber(overallPercent)}%`;
+            if (circle) {
+                const circumference = 2 * Math.PI * 50;
+                const offset = circumference - (overallPercent / 100) * circumference;
+                circle.style.strokeDashoffset = offset;
+            }
+
+            if (titleEl && subEl) {
+                if (overallPercent === 100) {
+                    titleEl.textContent = 'আলহামদুলিল্লাহ! আজকের সব আমল পূর্ণ হয়েছে';
+                    subEl.textContent = 'মহান আল্লাহ তাআলা আপনার সকল ইবাদত ও জিকির কবুল করুন। আমিন।';
+                } else if (overallPercent >= 60) {
+                    titleEl.textContent = 'মাশাআল্লাহ! দারুণ অগ্রগতি হয়েছে';
+                    subEl.textContent = `আপনি ইতিমধ্যে আজকের ${toBengaliNumber(overallPercent)}% আমল সম্পন্ন করেছেন। বাকিগুলোও পূর্ণ করুন।`;
+                } else if (overallPercent > 0) {
+                    titleEl.textContent = 'বরকতময় শুরু হয়েছে!';
+                    subEl.textContent = `আজ মোট ${toBengaliNumber(totalRakatsToday)} রাকাত নামাজ ও ${toBengaliNumber(completedAmalsCount)}টি আমল পূর্ণ হয়েছে।`;
+                } else {
+                    titleEl.textContent = 'আল্লাহ আপনার আমল কবুল করুন';
+                    subEl.textContent = 'আজকের নির্ধারিত নামাজ ও জিকিরগুলো সম্পন্ন করে টিক চিহ্ন দিন।';
+                }
             }
         }
 
@@ -995,8 +1315,10 @@
         }
 
         function confirmResetDay() {
-            state.prayers.forEach(p => p.completed = false);
-            state.amals.forEach(a => a.count = 0);
+            state.prayers.forEach(p => {
+                p.parts = { fard: false, sunnah: false, nafl: false, witr: false };
+            });
+            state.amals.forEach(a => { a.count = 0; });
             state.dateKey = new Date().toLocaleDateString('en-CA');
             saveState();
             renderAll();
@@ -1016,6 +1338,20 @@
                 box.classList.add('translate-y-20', 'opacity-0');
             }, 3000);
         }
+
+        function renderAll() {
+            updateDateDisplay();
+            applyThemeAndSoundUI();
+            renderPrayers();
+            renderActiveTasbih();
+            renderAmalsList();
+            updateDashboardStats();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            renderAll();
+        });
     </script>
 </body>
 </html>

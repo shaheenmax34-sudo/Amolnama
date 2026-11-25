@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+<html lang="bn" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>দৈনিক আমল — দৈনিক নামাজ, জিকির ও দোয়া</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Hind Siliguri & Amiri (for Arabic) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tone.js for gentle audio feedback -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Hind Siliguri', 'sans-serif'],
+                        arabic: ['Amiri', 'serif'],
+                    },
+                    colors: {
+                        emerald: {
+                            50: '#fff1ed',
+                            100: '#ffe0d6',
+                            200: '#ffc2ad',
+                            300: '#ff9b78',
+                            400: '#FF3D00',
+                            500: '#FF3D00',
+                            600: '#FF3D00',
+                            700: '#d93200',
+                            800: '#b32800',
+                            850: '#8f1f00',
+                            900: '#731900',
+                            950: '#420c00',
+                        },
+                        amber: {
+                            50: '#fff1ed',
+                            100: '#ffe0d6',
+                            200: '#ffc2ad',
+                            300: '#ff9b78',
+                            400: '#FF3D00',
+                            500: '#FF3D00',
+                            600: '#FF3D00',
+                            700: '#d93200',
+                            800: '#b32800',
+                            900: '#731900',
+                            950: '#420c00',
+                        },
+                        teal: {
+                            50: '#fff1ed',
+                            100: '#ffe0d6',
+                            200: '#ffc2ad',
+                            300: '#ff9b78',
+                            400: '#FF3D00',
+                            500: '#FF3D00',
+                            600: '#FF3D00',
+                            700: '#d93200',
+                            800: '#b32800',
+                            900: '#731900',
+                            950: '#420c00',
+                        },
+                        brandOrange: '#FF3D00'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .arabic-text {
+            font-family: 'Amiri', serif;
+        }
+        /* Subtle Islamic Geometric Pattern Background with #FF3D00 accent */
+        .islamic-pattern {
+            background-image: radial-gradient(rgba(255, 61, 0, 0.12) 1.5px, transparent 1.5px), radial-gradient(rgba(255, 61, 0, 0.07) 1.5px, #f8fafc 1.5px);
+            background-size: 32px 32px;
+            background-position: 0 0, 16px 16px;
+        }
+        .dark .islamic-pattern {
+            background-image: radial-gradient(rgba(255, 61, 0, 0.16) 1.5px, transparent 1.5px), radial-gradient(rgba(255, 61, 0, 0.08) 1.5px, #0f172a 1.5px);
+            background-size: 32px 32px;
+            background-position: 0 0, 16px 16px;
+        }
+        /* Tap Ripple & Scale Animation */
+        .tasbih-btn:active {
+            transform: scale(0.95);
+        }
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.5s ease-in-out;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 61, 0, 0.35);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="islamic-pattern bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-300 pb-12">
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-emerald-100 dark:border-slate-800 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 flex items-center justify-center text-white shadow-md shadow-emerald-600/20">
+                    <i class="fa-solid fa-mosque text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-emerald-900 dark:text-emerald-400 leading-tight">দৈনিক আমল</h1>
+                    <div id="current-date-display" class="text-xs text-slate-500 dark:text-slate-400 font-medium leading-snug mt-0.5 space-y-0.5">
+                        <div>আরবি তারিখ লোড হচ্ছে...</div>
+                        <div>বাংলা তারিখ লোড হচ্ছে...</div>
+                        <div>ইংরেজি তারিখ লোড হচ্ছে...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Header Action Controls -->
+            <div class="flex items-center gap-2">
+                <button type="button" onclick="toggleSound()" title="সাউন্ড চালু/বন্ধ করুন" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center transition">
+                    <i id="sound-icon" class="fa-solid fa-volume-high text-sm text-emerald-600 dark:text-emerald-400"></i>
+                </button>
+                <button type="button" onclick="toggleDarkMode()" title="ডার্ক/লাইট মোড" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center transition">
+                    <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
+                </button>
+                <button type="button" onclick="openResetModal()" title="আজকের হিসাব রিসেট করুন" class="px-3 py-2 rounded-xl bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/60 border border-amber-200/80 dark:border-amber-800/60 text-xs font-semibold flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    <span class="hidden sm:inline">নতুন দিন শুরু</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-5xl mx-auto px-4 pt-6 space-y-6">
+
+        <!-- Daily Amal Report Dashboard -->
+        <section class="bg-gradient-to-br from-[#FF3D00] via-[#e63700] to-[#b82b00] text-white rounded-3xl p-5 sm:p-6 shadow-lg shadow-[#FF3D00]/20 border border-orange-300/30">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                <!-- Overall Progress Ring -->
+                <div class="md:col-span-4 flex flex-col items-center justify-center text-center">
+                    <div class="relative w-32 h-32 flex items-center justify-center">
+                        <svg class="w-32 h-32" viewBox="0 0 120 120">
+                            <circle cx="60" cy="60" r="50" fill="none" stroke="currentColor" stroke-width="10" class="text-white/25"></circle>
+                            <circle id="overall-progress-ring" cx="60" cy="60" r="50" fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" stroke-dasharray="314.159" stroke-dashoffset="314.159" class="progress-ring-circle"></circle>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span id="overall-percentage-text" class="text-2xl font-extrabold text-white">০%</span>
+                            <span class="text-[11px] text-orange-100">সম্পন্ন হয়েছে</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary & 3 Stat Cards -->
+                <div class="md:col-span-8 space-y-4">
+                    <div>
+                        <span class="inline-block text-xs font-bold text-white bg-white/15 border border-white/20 px-3 py-1 rounded-full mb-1.5">
+                            দৈনিক আমল রিপোর্ট
+                        </span>
+                        <h2 id="motivational-title" class="text-xl sm:text-2xl font-bold text-white">
+                            আল্লাহ আপনার আমল কবুল করুন
+                        </h2>
+                        <p id="motivational-subtitle" class="text-xs sm:text-sm text-orange-100/95 mt-0.5">
+                            আজকের নির্ধারিত নামাজ ও জিকিরগুলো সম্পন্ন করে টিক চিহ্ন দিন।
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="p-3.5 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20 text-center">
+                            <div class="text-xs text-orange-100 mb-1">মোট রাকাত</div>
+                            <div id="total-rakats-display" class="text-xl sm:text-2xl font-extrabold text-white">০</div>
+                        </div>
+                        <div class="p-3.5 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20 text-center">
+                            <div class="text-xs text-orange-100 mb-1">ওয়াক্ত নামাজ</div>
+                            <div id="prayers-completed-display" class="text-xl sm:text-2xl font-extrabold text-white">০ / ৫</div>
+                        </div>
+                        <div class="p-3.5 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20 text-center">
+                            <div class="text-xs text-orange-100 mb-1">তসবি ও আমল</div>
+                            <div id="amals-completed-display" class="text-xl sm:text-2xl font-extrabold text-white">০ / ৩০</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Two-Column Grid for Prayers & Tasbih -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+            <!-- Left Column (5 cols): 5 Daily Prayers Tracker -->
+            <section class="lg:col-span-5 bg-white dark:bg-slate-800 rounded-3xl p-5 shadow-sm border border-slate-200/80 dark:border-slate-700/80">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                            পাঁচ ওয়াক্ত নামাজ
+                        </h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">ফরজ, সুন্নত, নফল ও বিতর আলাদা ট্যাবে টিক দিন</p>
+                    </div>
+
+                    <!-- Rakat Calculation Mode Toggle (Fard vs Full Sunnah+Fard) -->
+                    <div class="flex items-center bg-slate-100 dark:bg-slate-700/70 p-1 rounded-xl text-xs">
+                        <button id="mode-full-btn" type="button" onclick="setRakatMode('full')" class="px-2.5 py-1 rounded-lg font-semibold transition bg-emerald-600 text-white shadow-sm">
+                            সুন্নতসহ
+                        </button>
+                        <button id="mode-fard-btn" type="button" onclick="setRakatMode('fard')" class="px-2.5 py-1 rounded-lg font-semibold transition text-slate-600 dark:text-slate-300">
+                            শুধু ফরজ
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Prayers List Container -->
+                <div id="prayers-list" class="space-y-3">
+                    <!-- Rendered dynamically via JS -->
+                </div>
+
+                <!-- Rakat Summary Footer -->
+                <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                    <span>নামাজ অংশের অগ্রগতি:</span>
+                    <span id="prayer-section-percent" class="font-bold text-emerald-600 dark:text-emerald-400">০% (০ রাকাত)</span>
+                </div>
+            </section>
+
+            <!-- Right Column (7 cols): Interactive Digital Tasbih & Custom Amal Manager -->
+            <section class="lg:col-span-7 space-y-6">
+
+                <!-- Interactive Digital Tasbih Tapper Card -->
+                <div class="bg-white dark:bg-slate-800 rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-200/80 dark:border-slate-700/80">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3 py-1 rounded-full">
+                            <i class="fa-solid fa-fingerprint mr-1"></i> ডিজিটাল তসবি কাউন্টার
+                        </span>
+                        <span id="active-tasbih-status" class="text-xs font-medium text-slate-500 dark:text-slate-400">
+                            চলমান আমল
+                        </span>
+                    </div>
+
+                    <!-- Selected Zikr Display -->
+                    <div class="text-center py-3 px-4 rounded-2xl bg-slate-50 dark:bg-slate-900/70 border border-slate-100 dark:border-slate-700/70 mb-5">
+                        <div id="active-zikr-badge-wrap" class="mb-1.5 hidden">
+                            <span id="active-zikr-badge" class="inline-block text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800"></span>
+                        </div>
+                        <p id="active-zikr-arabic" class="arabic-text text-2xl sm:text-3xl text-emerald-800 dark:text-emerald-300 font-bold mb-1 leading-relaxed">
+                            اللَّهُ أَكْبَرُ
+                        </p>
+                        <h4 id="active-zikr-name" class="text-base sm:text-lg font-bold text-slate-800 dark:text-white leading-snug">
+                            আল্লাহু আকবার
+                        </h4>
+                        <p id="active-zikr-meaning" class="hidden text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-lg mx-auto leading-relaxed"></p>
+                        <div class="mt-2 flex items-center justify-center gap-2 text-sm">
+                            <span id="active-zikr-count" class="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400">০</span>
+                            <span class="text-slate-400">/</span>
+                            <span id="active-zikr-target" class="font-semibold text-slate-600 dark:text-slate-300">১</span>
+                            <span class="text-xs text-slate-400">বার</span>
+                        </div>
+                        <!-- Mini Progress Bar -->
+                        <div class="w-full max-w-xs mx-auto bg-slate-200 dark:bg-slate-700 h-2 rounded-full mt-2.5 overflow-hidden">
+                            <div id="active-zikr-bar" class="h-full rounded-full transition-all duration-300" style="width: 0%; background-color: #FF3D00;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Tap Button & Controls -->
+                    <div class="flex items-center justify-center gap-4 sm:gap-6">
+                        <!-- Decrement (-1) -->
+                        <button type="button" onclick="decrementActiveAmal()" title="১ কমান" class="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 flex items-center justify-center text-lg font-bold transition shadow-sm">
+                            -১
+                        </button>
+
+                        <!-- Main Big Tap Circle -->
+                        <button id="main-tap-btn" type="button" onclick="incrementActiveAmal()" class="tasbih-btn w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-b from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white shadow-xl shadow-emerald-600/30 border-4 border-emerald-200 dark:border-emerald-800 flex flex-col items-center justify-center transition-all select-none cursor-pointer">
+                            <i class="fa-solid fa-hand-pointer text-2xl mb-1 opacity-90"></i>
+                            <span class="text-base font-bold tracking-wide">গণনা করুন</span>
+                            <span class="text-[10px] text-emerald-100 opacity-80">+১ চাপুন</span>
+                        </button>
+
+                        <!-- Reset Current Zikr -->
+                        <button type="button" onclick="resetActiveAmal()" title="এই তসবি রিসেট করুন" class="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/50 border border-amber-200/70 dark:border-amber-800/50 flex items-center justify-center text-base transition shadow-sm">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Section 1: পাঁচ ওয়াক্ত নামাজের পর জিকির ও আমল -->
+                <div class="bg-white dark:bg-slate-800 rounded-3xl p-5 shadow-sm border border-slate-200/80 dark:border-slate-700/80">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                পাঁচ ওয়াক্ত নামাজের পর জিকির ও আমল
+                            </h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">যেকোনো আমলে ক্লিক করে তসবি পড়ুন অথবা সরাসরি টিক দিন</p>
+                        </div>
+
+                        <button type="button" onclick="toggleAddAmalForm('post_prayer')" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>নতুন আমল যোগ</span>
+                        </button>
+                    </div>
+
+                    <!-- Collapsible Add Custom Amal Form -->
+                    <form id="add-amal-form" onsubmit="handleAddAmal(event)" class="hidden mb-5 p-4 rounded-2xl bg-emerald-50/70 dark:bg-slate-900/80 border border-emerald-200 dark:border-slate-700 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-sm font-bold text-emerald-900 dark:text-emerald-300">নতুন আমল বা জিকির যুক্ত করুন</h4>
+                            <button type="button" onclick="toggleAddAmalForm()" class="text-slate-400 hover:text-slate-600 text-sm">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                            <div class="sm:col-span-6">
+                                <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">আমলের নাম / জিকির *</label>
+                                <input type="text" id="new-amal-name" required placeholder="যেমন: দরুদ শরীফ বা সূরা ইখলাস" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-sm focus:outline-none focus:border-emerald-500">
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">সংখ্যা (লক্ষ্য) *</label>
+                                <input type="number" id="new-amal-target" required min="1" max="100000" value="100" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-sm focus:outline-none focus:border-emerald-500">
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">তালিকা *</label>
+                                <select id="new-amal-section" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-sm focus:outline-none focus:border-emerald-500">
+                                    <option value="post_prayer">পাঁচ ওয়াক্ত নামাজের পর</option>
+                                    <option value="daily_amal">দৈনিক জিকির এবং আমল</option>
+                                    <option value="dua_amal">দোয়া ও আমল</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                            <div class="sm:col-span-4">
+                                <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">ছোট ব্যাজ (ঐচ্ছিক)</label>
+                                <input type="text" id="new-amal-badge" placeholder="যেমন: ৫ ওয়াক্ত নামাজের পর" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-sm focus:outline-none focus:border-emerald-500">
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">বাংলা অর্থ (ঐচ্ছিক)</label>
+                                <input type="text" id="new-amal-meaning" placeholder="অর্থ লিখুন" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-sm focus:outline-none focus:border-emerald-500">
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">আরবি টেক্সট (ঐচ্ছিক)</label>
+                                <input type="text" id="new-amal-arabic" placeholder="যেমন: اللَّهُمَّ صَلِّ..." class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-sm arabic-text focus:outline-none focus:border-emerald-500">
+                            </div>
+                            <div class="sm:col-span-2 flex items-end">
+                                <button type="submit" class="w-full py-2 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition shadow-sm">
+                                    যোগ করুন
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Post-Prayer Amals List Container -->
+                    <div id="post-prayer-amals-list" class="space-y-2.5">
+                        <!-- Rendered dynamically via JS -->
+                    </div>
+                </div>
+
+                <!-- Section 2: দৈনিক জিকির এবং আমল -->
+                <div class="bg-white dark:bg-slate-800 rounded-3xl p-5 shadow-sm border border-slate-200/80 dark:border-slate-700/80">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                                দৈনিক জিকির এবং আমল
+                            </h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">প্রতিদিনের নির্ধারিত জিকির ও তসবিগুলো নিয়মিত আদায় করুন</p>
+                        </div>
+
+                        <button type="button" onclick="toggleAddAmalForm('daily_amal')" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>নতুন আমল যোগ</span>
+                        </button>
+                    </div>
+
+                    <!-- Daily Amals List Container -->
+                    <div id="daily-amals-list" class="space-y-2.5">
+                        <!-- Rendered dynamically via JS -->
+                    </div>
+                </div>
+
+                <!-- Section 3: দোয়া ও আমল -->
+                <div class="bg-white dark:bg-slate-800 rounded-3xl p-5 shadow-sm border border-slate-200/80 dark:border-slate-700/80">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span>
+                                দোয়া ও আমল
+                            </h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">প্রতিদিনের প্রয়োজনীয় দোয়াগুলো পড়ুন এবং সম্পন্ন হলে টিক দিন</p>
+                        </div>
+                        <button type="button" onclick="toggleAddAmalForm('dua_amal')" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition">
+                            <i class="fa-solid fa-plus"></i><span>নতুন দোয়া যোগ</span>
+                        </button>
+                    </div>
+                    <div id="dua-amals-list" class="space-y-2.5"></div>
+                </div>
+
+            </section>
+        </div>
+    </main>
+
+    <!-- Custom Toast Notification Box -->
+    <div id="toast-box" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-slate-900 dark:bg-emerald-950 text-white px-4 py-3 rounded-2xl shadow-xl border border-emerald-500/30 flex items-center gap-3 text-sm font-medium">
+            <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400"></i>
+            <span id="toast-message">বার্তা</span>
+        </div>
+    </div>
+
+    <!-- Custom Confirmation Modal for Resetting Today's Progress -->
+    <div id="reset-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 text-center">
+            <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl">
+                <i class="fa-solid fa-rotate-right"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2">আজকের সব হিসাব রিসেট করবেন?</h3>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">
+                এতে আপনার আজকের ৫ ওয়াক্ত নামাজের টিক চিহ্ন এবং তসবির গণনা ০ হয়ে যাবে। তবে আপনার তৈরি করা কাস্টম আমলের তালিকা ঠিক থাকবে।
+            </p>
+            <div class="flex items-center gap-3">
+                <button type="button" onclick="closeResetModal()" class="flex-1 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-sm hover:bg-slate-200 transition">
+                    বাতিল
+                </button>
+                <button type="button" onclick="confirmResetDay()" class="flex-1 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm shadow-md transition">
+                    হ্যাঁ, রিসেট করুন
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- Helper: Convert English digits to Bengali digits ---
+        function toBengaliNumber(num) {
+            const bengaliDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+            return num.toString().replace(/\d/g, d => bengaliDigits[d]);
+        }
+
+        const BANGLA_HIJRI_MONTHS = [
+            'মুহররম',
+            'সফর',
+            'রবিউল আউয়াল',
+            'রবিউস সানি',
+            'জমাদিউল আউয়াল',
+            'জমাদিউস সানি',
+            'রজব',
+            'শাবান',
+            'রমজান',
+            'শাওয়াল',
+            'জিলকদ',
+            'জিলহজ'
+        ];
+
+        const GREGORIAN_MONTH_NAMES = new Set([
+            'january', 'february', 'march', 'april', 'may', 'june',
+            'july', 'august', 'september', 'october', 'november', 'december',
+            'জানুয়ারি', 'জানুয়ারি', 'ফেব্রুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল',
+            'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'
+        ]);
+
+        // --- Default Data Structure (Farz, Sunnah, Nafl, and Witr separated) ---
+        const defaultPrayers = [
+            {
+                id: 'fajr',
+                name: 'ফজর',
+                time: 'ভোর',
+                fardRakats: 2,
+                sunnahRakats: 2,
+                naflRakats: 0,
+                witrRakats: 0,
+                parts: { fard: false, sunnah: false, nafl: false, witr: false }
+            },
+            {
+                id: 'dhuhr',
+                name: 'যোহর',
+                time: 'দুপুর',
+                fardRakats: 4,
+                sunnahRakats: 6,
+                naflRakats: 2,
+                witrRakats: 0,
+                parts: { fard: false, sunnah: false, nafl: false, witr: false }
+            },
+            {
+                id: 'asr',
+                name: 'আসর',
+                time: 'বিকেল',
+                fardRakats: 4,
+                sunnahRakats: 0,
+                naflRakats: 0,
+                witrRakats: 0,
+                parts: { fard: false, sunnah: false, nafl: false, witr: false }
+            },
+            {
+                id: 'maghrib',
+                name: 'মাগরিব',
+                time: 'সন্ধ্যা',
+                fardRakats: 3,
+                sunnahRakats: 2,
+                naflRakats: 2,
+                witrRakats: 0,
+                parts: { fard: false, sunnah: false, nafl: false, witr: false }
+            },
+            {
+                id: 'isha',
+                name: 'এশা',
+                time: 'রাত',
+                fardRakats: 4,
+                sunnahRakats: 4,
+                naflRakats: 2,
+                witrRakats: 3,
+                parts: { fard: false, sunnah: false, nafl: false, witr: false }
+            }
+        ];
+
+        const defaultAmals = [
+            // === Section 1: পাঁচ ওয়াক্ত নামাজের পর জিকির ও আমল ===
+            {
+                id: 'pp_takbir_1',
+                section: 'post_prayer',
+                badge: '৫ ওয়াক্ত নামাজের পর',
+                name: 'আল্লাহু আকবার',
+                meaning: 'অর্থ: আল্লাহ সবচেয়ে মহান।',
+                arabic: 'اللَّهُ أَكْبَرُ',
+                target: 1,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'pp_astaghfirullah_3',
+                section: 'post_prayer',
+                badge: '৫ ওয়াক্ত নামাজের পর',
+                name: 'আস্তাগফিরুল্লাহ',
+                meaning: 'অর্থ: আমি আল্লাহর কাছে ক্ষমা প্রার্থনা করছি।',
+                arabic: 'أَسْتَغْفِرُ اللَّهَ',
+                target: 3,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'pp_allahumma_antas_salam_1',
+                section: 'post_prayer',
+                badge: '৫ ওয়াক্ত নামাজের পর',
+                name: 'আল্লাহুম্মা আনতাস সালাম ওয়া মিনকাস সালাম, তাবারাকতা ইয়া যাল-জালালি ওয়াল ইকরাম',
+                meaning: 'অর্থ: হে আল্লাহ, আপনিই শান্তিময় এবং আপনার নিকট থেকেই শান্তি আসে। আপনি বরকতময় (বা কল্যাণময়), হে মহত্ত্ব ও মর্যাদার অধিকারী।',
+                arabic: 'اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ، تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ',
+                target: 1,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'pp_allahumma_ainni_1',
+                section: 'post_prayer',
+                badge: '৫ ওয়াক্ত নামাজের পর',
+                name: 'আল্লাহুম্মা আ-ইন্নি আলা যিকরিকা ওয়া শুকরিকা ওয়া হুসনি ইবাদাতিকা',
+                meaning: 'অর্থ: হে আল্লাহ! আপনার জিকির করা, আপনার শুকরিয়া আদায় করা এবং সুন্দরভাবে আপনার ইবাদত করার ক্ষেত্রে আমাকে সাহায্য করুন।',
+                arabic: 'اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ',
+                target: 1,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'pp_ayatul_kursi_1',
+                section: 'post_prayer',
+                badge: '৫ ওয়াক্ত নামাজের পর',
+                name: 'আয়াতুল কুরসি',
+                meaning: 'অর্থ: আল্লাহ ছাড়া কোনো সত্য ইলাহ নেই; তিনি চিরঞ্জীব, সব কিছুর ধারক। তাঁকে তন্দ্রা ও নিদ্রা স্পর্শ করে না...',
+                arabic: 'اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...',
+                target: 1,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'pp_sayyidul_istighfar_1',
+                section: 'post_prayer',
+                badge: '৫ ওয়াক্ত নামাজের পর',
+                name: 'সাইয়েদুল ইস্তেগফার',
+                meaning: 'অর্থ: হে আল্লাহ! আপনি আমার রব; আপনি ছাড়া কোনো সত্য ইলাহ নেই। আপনি আমাকে সৃষ্টি করেছেন এবং আমি আপনার বান্দা...',
+                arabic: 'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَٰهَ إِلَّا أَنْتَ خَلَقْتَنِي وَأَنَا عَبْدُكَ...',
+                target: 1,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'pp_subhanallah_33',
+                section: 'post_prayer',
+                badge: '৫ ওয়াক্ত নামাজের পর',
+                name: 'সুবহানাল্লাহ',
+                meaning: 'অর্থ: আল্লাহ তাআলা পবিত্র ও মহিমান্বিত।',
+                arabic: 'سُبْحَانَ اللَّهِ',
+                target: 33,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'pp_alhamdulillah_33',
+                section: 'post_prayer',
+                badge: '৫ ওয়াক্ত নামাজের পর',
+                name: 'আলহামদুলিল্লাহ',
+                meaning: 'অর্থ: সমস্ত প্রশংসা একমাত্র আল্লাহর জন্য।',
+                arabic: 'الْحَمْدُ لِلَّهِ',
+                target: 33,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'pp_allahuakbar_33',
+                section: 'post_prayer',
+                badge: '৫ ওয়াক্ত নামাজের পর',
+                name: 'আল্লাহু আকবার',
+                meaning: 'অর্থ: আল্লাহ সবচেয়ে মহান।',
+                arabic: 'اللَّهُ أَكْبَرُ',
+                target: 33,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'pp_la_ilaha_illallahu_wahdahu_1',
+                section: 'post_prayer',
+                badge: '৫ ওয়াক্ত নামাজের পর',
+                name: 'লা ইলাহা ইল্লাল্লাহু ওয়াহদাহু লা শারিকালাহু লাহুল মুলকু ওয়া লাহুল হামদু ওয়া হুয়া আলা কুল্লি শাইয়িন কাদির',
+                meaning: 'অর্থ: আল্লাহ ছাড়া কোনো সত্য ইলাহ নেই; তিনি এক, তাঁর কোনো শরিক নেই। রাজত্ব তাঁরই এবং সমস্ত প্রশংসা তাঁরই; তিনি সব কিছুর ওপর সর্বশক্তিমান।',
+                arabic: 'لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ',
+                target: 1,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'pp_surah_ikhlas_3',
+                section: 'post_prayer',
+                badge: '৫ ওয়াক্ত নামাজের পর',
+                name: 'সূরা ইখলাস',
+                meaning: 'অর্থ: বলুন, তিনি আল্লাহ, এক-অদ্বিতীয়। আল্লাহ অমুখাপেক্ষী। তিনি কাউকে জন্ম দেননি এবং তাঁকেও জন্ম দেওয়া হয়নি। আর তাঁর সমতুল্য কেউ নেই।',
+                arabic: 'قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ',
+                target: 3,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'pp_surah_falaq_3',
+                section: 'post_prayer',
+                badge: '৫ ওয়াক্ত নামাজের পর',
+                name: 'সূরা ফালাক',
+                meaning: 'অর্থ: বলুন, আমি আশ্রয় গ্রহণ করছি প্রভাতের রবের কাছে— তিনি যা সৃষ্টি করেছেন তার অনিষ্ট থেকে...',
+                arabic: 'قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِن شَرِّ مَا خَلَقَ...',
+                target: 3,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'pp_surah_nas_3',
+                section: 'post_prayer',
+                badge: '৫ ওয়াক্ত নামাজের পর',
+                name: 'সূরা নাস',
+                meaning: 'অর্থ: বলুন, আমি আশ্রয় গ্রহণ করছি মানুষের রবের কাছে, মানুষের মালিকের কাছে, মানুষের ইলাহের কাছে...',
+                arabic: 'قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ...',
+                target: 3,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'pp_istighfar_10',
+                section: 'post_prayer',
+                badge: '৫ ওয়াক্ত নামাজের পর',
+                name: 'ইস্তিগফার (ক্ষমা প্রার্থনা)',
+                meaning: 'অর্থ: আমি মহান আল্লাহর কাছে ক্ষমা প্রার্থনা করছি এবং তাঁর দিকেই ফিরে আসছি (তওবা করছি)।',
+                arabic: 'أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ وَأَتُوبُ إِلَيْهِ',
+                target: 10,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'pp_durud_10',
+                section: 'post_prayer',
+                badge: '৫ ওয়াক্ত নামাজের পর',
+                name: 'দরুদ শরীফ',
+                meaning: 'অর্থ: হে আল্লাহ! আমাদের নবী মুহাম্মদ ও তাঁর পরিবারবর্গের ওপর রহমত বর্ষণ করুন।',
+                arabic: 'اللَّهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ وَعَلَىٰ آلِ مُحَمَّدٍ',
+                target: 10,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'pp_fajr_subhanallahi_adada_3',
+                section: 'post_prayer',
+                badge: 'শুধু ফজরের পর',
+                name: 'সুবহানাল্লাহি ওয়া বিহামদিহি, আদাদা খালকিহি, ওয়া রিদা নাফসিহি, ওয়া যিনাতা আরশিহি, ওয়া মিদাদা কালিমাতিহি',
+                meaning: 'অর্থ: আমি আল্লাহ তাআলার প্রশংসাসহ পবিত্রতা ঘোষণা করছি— তাঁর সৃষ্টিকুলের সংখ্যার পরিমাণ, তাঁর সন্তুষ্টি অনুযায়ী, তাঁর আরশের ওজন পরিমাণ এবং তাঁর বাণী বা কালির পরিমাণ।',
+                arabic: 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ',
+                target: 3,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'pp_fm_allahuakbar_kabira_3',
+                section: 'post_prayer',
+                badge: 'ফজর ও মাগরিবের পর',
+                name: 'আল্লাহু আকবারু কাবীরা, ওয়াল হামদুলিল্লাহি কাসীরা, ওয়া সুবহানাল্লাহি বুকরাতাও ওয়া আসীলা',
+                meaning: 'অর্থ: আল্লাহ সবচেয়ে মহান ও অতি বড়; আল্লাহর জন্য অনেক অনেক প্রশংসা; সকাল ও সন্ধ্যায় আল্লাহর পবিত্রতা ঘোষণা করছি।',
+                arabic: 'اللَّهُ أَكْبَرُ كَبِيرًا، وَالْحَمْدُ لِلَّهِ كَثِيرًا، وَسُبْحَانَ اللَّهِ بُكْرَةً وَأَصِيلًا',
+                target: 3,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'pp_fm_hasbiyallahu_7',
+                section: 'post_prayer',
+                badge: 'ফজর ও মাগরিবের পর',
+                name: 'হাসবিয়াল্লাহু লা ইলাহা ইল্লা হুয়া আলাইহি তাওয়াক্কালতু ওয়া হুয়া রাব্বুল আরশিল আজিম',
+                meaning: 'অর্থ: আমার জন্য আল্লাহই যথেষ্ট; তিনি ছাড়া কোনো সত্য ইলাহ নেই। আমি তাঁরই ওপর ভরসা করেছি এবং তিনি মহান আরশের রব।',
+                arabic: 'حَسْبِيَ اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ',
+                target: 7,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'pp_fm_bismillahilladhi_3',
+                section: 'post_prayer',
+                badge: 'ফজর ও মাগরিবের পর',
+                name: 'বিসমিল্লাহিল্লাজি লা ইয়াদুররু মাআসমিহি শাইউন ফিল আরদি ওয়ালা ফিস সামা-ই, ওয়া হুয়াস সামিউল আলিম',
+                meaning: 'অর্থ: আল্লাহর নামে শুরু করছি, যাঁর নামের বরকতে জমিন ও আসমানের কোনো কিছুই ক্ষতি করতে পারে না; তিনি সর্বশ্রোতা, সর্বজ্ঞ।',
+                arabic: 'بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ',
+                target: 3,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'pp_fm_auzu_bikalimatillah_khalak_3',
+                section: 'post_prayer',
+                badge: 'ফজর ও মাগরিবের পর',
+                name: 'আউযু বিকালিমাতিল্লাহিত তাম্মাতি মিন শাররি মা খালাক',
+                meaning: 'অর্থ: আমি আল্লাহর পরিপূর্ণ কালেমাসমূহের মাধ্যমে তিনি যা সৃষ্টি করেছেন তার অনিষ্ট থেকে আশ্রয় প্রার্থনা করছি।',
+                arabic: 'أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ',
+                target: 3,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'pp_fm_auzu_bikalimatillah_shaytan_3',
+                section: 'post_prayer',
+                badge: 'ফজর ও মাগরিবের পর',
+                name: 'আউযু বিকালিমাতিল্লাহিত তাম্মাতি মিন কুল্লি শায়তানিন ওয়া হাম্মাতিন ওয়া মিন কুল্লি আইনিন লাম্মাহ',
+                meaning: 'অর্থ: আমি আল্লাহর পরিপূর্ণ কালেমাসমূহের মাধ্যমে প্রত্যেক শয়তান, বিষাক্ত প্রাণী এবং বদনজরের অনিষ্ট থেকে আশ্রয় প্রার্থনা করছি।',
+                arabic: 'أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ كُلِّ شَيْطَانٍ وَهَامَّةٍ، وَمِنْ كُلِّ عَيْنٍ لَامَّةٍ',
+                target: 3,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'pp_fm_allahumma_ajirni_7',
+                section: 'post_prayer',
+                badge: 'ফজর ও মাগরিবের পর',
+                name: 'আল্লাহুম্মা আজিরনি মিনান্নার',
+                meaning: 'অর্থ: হে আল্লাহ! আমাকে জাহান্নামের আগুন থেকে রক্ষা করুন।',
+                arabic: 'اللَّهُمَّ أَجِرْنِي مِنَ النَّارِ',
+                target: 7,
+                count: 0,
+                isDefault: true
+            },
+
+            // === Section 2: দৈনিক জিকির এবং আমল ===
+            {
+                id: 'da_astaghfirullah_100',
+                section: 'daily_amal',
+                name: 'আস্তাগফিরুল্লাহ',
+                meaning: 'অর্থ: আমি আল্লাহর কাছে ক্ষমা প্রার্থনা করছি।',
+                arabic: 'أَسْتَغْفِرُ اللَّهَ',
+                target: 100,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'da_subhanallahi_wa_bihamdihi_100',
+                section: 'daily_amal',
+                name: 'সুবহানাল্লাহি ওয়া বিহামদিহি',
+                meaning: 'অর্থ: আমি আল্লাহ তাআলার প্রশংসাসহ তাঁর পবিত্রতা ঘোষণা করছি।',
+                arabic: 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ',
+                target: 100,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'da_la_ilaha_illallah_100',
+                section: 'daily_amal',
+                name: 'লা ইলাহা ইল্লাল্লাহ',
+                meaning: 'অর্থ: আল্লাহ ছাড়া কোনো সত্য ইলাহ নেই।',
+                arabic: 'لَا إِلَٰهَ إِلَّا اللَّهُ',
+                target: 100,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'da_durud_sharif_100',
+                section: 'daily_amal',
+                name: 'দরুদ শরীফ',
+                meaning: 'অর্থ: হে আল্লাহ! আমাদের নবী মুহাম্মদ ও তাঁর পরিবারবর্গের ওপর রহমত বর্ষণ করুন।',
+                arabic: 'اللَّهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ وَعَلَىٰ آلِ مُحَمَّدٍ',
+                target: 100,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'da_subhanallahil_azim_astaghfirullah_100',
+                section: 'daily_amal',
+                name: 'সুবহানাল্লাহি ওয়া বিহামদিহি সুবহানাল্লাহিল আজিম ওয়া বিহামদিহি আস্তাগফিরুল্লাহ',
+                meaning: 'অর্থ: আল্লাহ তাআলার প্রশংসাসহ তাঁর পবিত্রতা ঘোষণা করছি; মহান আল্লাহর প্রশংসাসহ তাঁর পবিত্রতা ঘোষণা করছি; আমি আল্লাহর কাছে ক্ষমা প্রার্থনা করছি।',
+                arabic: 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، سُبْحَانَ اللَّهِ الْعَظِيمِ وَبِحَمْدِهِ، أَسْتَغْفِرُ اللَّهَ',
+                target: 100,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'da_astaghfirullah_700',
+                section: 'daily_amal',
+                name: 'আস্তাগফিরুল্লাহ',
+                meaning: 'অর্থ: আমি আল্লাহর কাছে ক্ষমা প্রার্থনা করছি।',
+                arabic: 'أَسْتَغْفِرُ اللَّهَ',
+                target: 700,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'da_astaghfirullah_1000',
+                section: 'daily_amal',
+                name: 'আস্তাগফিরুল্লাহ',
+                meaning: 'অর্থ: আমি আল্লাহর কাছে ক্ষমা প্রার্থনা করছি।',
+                arabic: 'أَسْتَغْفِرُ اللَّهَ',
+                target: 1000,
+                count: 0,
+                isDefault: true
+            },
+            {
+                id: 'da_durud_sharif_1000',
+                section: 'daily_amal',
+                name: 'দরুদ শরীফ',
+                meaning: 'অর্থ: হে আল্লাহ! আমাদের নবী মুহাম্মদ ও তাঁর পরিবারবর্গের ওপর রহমত বর্ষণ করুন।',
+                arabic: 'اللَّهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ وَعَلَىٰ آلِ مُحَمَّدٍ',
+                target: 1000,
+                count: 0,
+                isDefault: true
+            },
+
+            // === Section 3: দোয়া ও আমল ===
+            { id: 'dua_halal_rizq', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'আল্লাহুম্মাকফিনি বিহালালিকা আন হারামিকা ওয়া আগনিনি বিফাদলিকা আম্মান সিওয়াক।', meaning: 'অর্থ: হে আল্লাহ! আপনার হালাল রিজিক দিয়ে আমাকে হারাম থেকে বাঁচিয়ে রাখুন এবং আপনার অনুগ্রহ দিয়ে আমাকে আপনি ছাড়া অন্য সবার থেকে অমুখাপেক্ষী করে দিন।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_beneficial_knowledge', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'আল্লাহুম্মা ইন্নি আসআলুকা ইলমান নাফিআঁও ওয়া রিযকান তায়্যিবাঁও ওয়া আমালাম মুতাকাব্বালা।', meaning: 'অর্থ: হে আল্লাহ! আমি আপনার কাছে উপকারী জ্ঞান, পবিত্র রিজিক এবং কবুলযোগ্য আমল প্রার্থনা করি।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_musa_rizq', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'রাব্বি ইন্নি লিমা আনযালতা ইলায়্যা মিন খাইরিন ফাকির।', meaning: 'অর্থ: হে আমার রব! আপনি আমার প্রতি যে কল্যাণ (রিজিক) নাযিল করবেন, আমি তার মুখাপেক্ষী।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_food_barakah', section: 'dua_amal', badge: 'দোয়া ও আমল', name: "আল্লাহুম্মা বারিক লানা ফিহি ওয়া আত'ইমনা খাইরাম মিনহু। (খাবার বা রিজিকের ক্ষেত্রে)", meaning: 'অর্থ: হে আল্লাহ! এতে আমাদের জন্য বরকত দান করুন এবং এর চেয়ে উত্তম রিজিক আমাদের দান করুন।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_poverty', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'আল্লাহুম্মা ইন্নি আউজুবিকা মিনাল ফাকরি, ওয়াল কিল্লাতি, ওয়াজ জিল্লাতি, ওয়া আউজুবিকা মিন আন আজলিমা আও উজলাম।', meaning: 'অর্থ: হে আল্লাহ! আমি আপনার কাছে আশ্রয় চাই দারিদ্র্য থেকে, স্বল্পতা বা কম অনুগ্রহ থেকে এবং লাঞ্ছনা বা অসম্মান থেকে। আরও আশ্রয় চাই কারও ওপর জুলুম করা থেকে অথবা কারও দ্বারা জুলুমের শিকার হওয়া থেকে।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_yunus', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'লা ইলাহা ইল্লা আনতা সুবহানাকা ইন্নি কুনতু মিনাজ জ্বালিমিন।', meaning: 'অর্থ: আপনি ছাড়া কোনো সত্য ইলাহ নেই; আপনি পবিত্র-মহান। নিশ্চয়ই আমি জালিমদের অন্তর্ভুক্ত।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_anxiety', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'আল্লাহুম্মা ইন্নি আউজুবিকা মিনাল হাম্মি ওয়াল হুজনি, ওয়া আউজুবিকা মিনাল আজজি ওয়াল কাসালি, ওয়া আউজুবিকা মিনাল জুবনি ওয়াল বুখলি, ওয়া আউজুবিকা মিন গালাবাতিদ দাইনি ওয়া কাহরির রিজাল।', meaning: 'অর্থ: হে আল্লাহ! আমি আপনার আশ্রয় চাই দুশ্চিন্তা ও দুঃখ থেকে, অপারগতা ও অলসতা থেকে, কাপুরুষতা ও কৃপণতা থেকে, এবং ঋণের ভার ও মানুষের দমন-পীড়ন থেকে।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_shifa', section: 'dua_amal', badge: 'দোয়া ও আমল', name: "আল্লাহুম্মা রাব্বান নাস, আযহিবিল বা'স, ইশফি ওয়া আনতাশ শাফি, লা শিফাআ ইল্লা শিফাউকা, শিফাআঁল লা ইউগাদিরু সাকামা।", meaning: 'অর্থ: হে আল্লাহ! মানুষের রব, কষ্ট দূর করে দিন, আরোগ্য দান করুন—আপনিই আরোগ্যদাতা। আপনার আরোগ্য ছাড়া কোনো আরোগ্য নেই; এমন আরোগ্য দিন যা কোনো রোগ বাকি রাখে না।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_health', section: 'dua_amal', badge: 'দোয়া ও আমল', name: "আল্লাহুম্মা আফিনি ফি বাদানি, আল্লাহুম্মা আফিনি ফি সাম'য়ি, আল্লাহুম্মা আফিনি ফি বাসারি, লা ইলাহা ইল্লা আনতা। (সকাল-সন্ধ্যা ৩ বার)", meaning: 'অর্থ: হে আল্লাহ! আমার শরীরে সুস্থতা দিন, আমার শ্রবণশক্তিতে সুস্থতা দিন, আমার দৃষ্টিশক্তিতে সুস্থতা দিন। আপনি ছাড়া কোনো সত্য ইলাহ নেই।', arabic: '', target: 3, count: 0, isDefault: true },
+            { id: 'dua_ayyub', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'রাব্বি আন্নি মাসসানিয়াদ দুররু ওয়া আনতা আরহামুর রাহিমিন।', meaning: 'অর্থ: হে আমার রব! আমাকে রোগ-কষ্ট স্পর্শ করেছে, আর আপনি তো সর্বশ্রেষ্ঠ দয়ালু।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_forgive_home_rizq', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'আল্লাহুম্মাগফির লি যাম্বি, ওয়া ওয়াস্তি লি ফী দারী, ওয়া বারিক লি ফী রিযকী।', meaning: 'অর্থ: হে আল্লাহ! আমার গুনাহ ক্ষমা করে দিন, আমার ঘর প্রশস্ত করে দিন এবং আমার রিজিকে বরকত দান করুন।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_unexpected_rizq', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'আল্লাহুম্মা বারিক লি ফি রিজকি ওয়ারজুকনি মিন হাইছু লা আহতাছিবু।', meaning: 'অর্থ: হে আল্লাহ! আমার রিজিকে বরকত দান করুন এবং আমাকে এমন উৎস থেকে রিজিক দিন, যা আমার ধারণারও বাইরে।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_parents_mercy', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'রাব্বির হামহুমা কামা রাব্বায়ানি সাগিরা।', meaning: 'অর্থ: হে আমার পালনকর্তা! তাদের উভয়ের প্রতি দয়া করুন, যেমন তারা আমাকে শৈশবে লালন-পালন করেছেন।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_parents_believers', section: 'dua_amal', badge: 'দোয়া ও আমল', name: "রাব্বানাগ ফিরলি ওয়ালি ওয়ালিদাইয়া, ওয়ালিল মু'মিনিনা ইয়াওমা ইয়াক্বুমুল হিসাব।", meaning: 'অর্থ: হে আমাদের পালনকর্তা! যেদিন হিসাব কায়েম হবে, সেদিন আমাকে, আমার পিতা-মাতাকে এবং সব মুমিনকে ক্ষমা করুন।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_righteous_child', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'রব্বি হাব লি মিনাস সালিহিন।', meaning: 'অর্থ: হে আমার রব, আমাকে সৎকর্মশীল সন্তান দান করুন।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_family', section: 'dua_amal', badge: 'দোয়া ও আমল', name: "রাব্বানা হাব লানা মিন আজওয়াজিনা ওয়া জুররিয়্যাতিনা কুররাতা আ'ইউনিওঁ, ওয়াজ'আলনা লিলমুত্তাকীনা ইমামা।", meaning: 'অর্থ: হে আমাদের রব! আপনি আমাদেরকে এমন স্ত্রী ও সন্তানাদি দান করুন, যাদের দেখে আমাদের চোখ জুড়াবে এবং আমাদেরকে মুত্তাকীদের আদর্শ বানিয়ে দিন।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_city_safety', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'রাব্বিজআল হাজাল বালাদা আ-মিনাও ওয়াজনুবনী ওয়ান্যা আন না-বুদাল আসনা-ম।', meaning: 'অর্থ: হে আমার পালনকর্তা! এ নগরকে নিরাপদ করুন এবং আমাকে ও আমার সন্তানদের মূর্তি পূজা থেকে দূরে রাখুন।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_praise', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'আলহামদু লিল্লাহি ওয়াশ-শুকরু লাকা ইয়া মালিকাল মুলুক, ইয়া রব্বি ওয়া ওয়ালিয়্যি ওয়া রজিক্বি।', meaning: 'অর্থ: সকল প্রশংসা ও কৃতজ্ঞতা কেবল আপনারই, হে রাজাধিরাজ! হে আমার প্রতিপালক, অভিভাবক ও রিজিকদাতা।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_help', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'ইয়া হাইয়্যু ইয়া কাইয়্যুমু বিরাহমাতিকা আস্তাগিছ, আসলিহ লি শানি কুল্লাহু, ওয়ালা তাকিলনি ইলা নাফসি তারফাতা আইন।', meaning: 'অর্থ: হে চিরঞ্জীব, হে সর্বকিছুর ধারক ও রক্ষণাবেক্ষণকারী! আপনার রহমতের উসিলায় আমি সাহায্য প্রার্থনা করছি। আপনি আমার সার্বিক বিষয় সংশোধন করে দিন এবং চোখের পলকের সময়ের জন্যও আমাকে আমার নিজের ওপর ছেড়ে দেবেন না।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_rabbi_qareeb', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'ইন্না রব্বী ক্বারীবুম মুজীব।', meaning: 'অর্থ: নিশ্চয়ই আমার রব অতি নিকটে, দোয়া কবুলকারী।', arabic: '', target: 3, count: 0, isDefault: true },
+        ];
+
+        // Migrate legacy prayer objects into separate parts safely
+        function normalizePrayers(prayersList) {
+            const source = Array.isArray(prayersList) && prayersList.length > 0 ? prayersList : defaultPrayers;
+            return defaultPrayers.map(def => {
+                const existing = source.find(item => item.id === def.id);
+                if (!existing) {
+                    return JSON.parse(JSON.stringify(def));
+                }
+                const hasParts = existing.parts && typeof existing.parts === 'object';
+                const fardDone = hasParts ? Boolean(existing.parts.fard) : Boolean(existing.completed);
+                const sunnahDone = (def.sunnahRakats > 0 && hasParts) ? Boolean(existing.parts.sunnah) : false;
+                const naflDone = (def.naflRakats > 0 && hasParts) ? Boolean(existing.parts.nafl) : false;
+                const witrDone = (def.witrRakats > 0 && hasParts) ? Boolean(existing.parts.witr) : false;
+
+                return {
+                    ...JSON.parse(JSON.stringify(def)),
+                    parts: {
+                        fard: fardDone,
+                        sunnah: sunnahDone,
+                        nafl: naflDone,
+                        witr: witrDone
+                    }
+                };
+            });
+        }
+
+        // --- App State ---
+        let state = {
+            dateKey: new Date().toLocaleDateString('en-CA'),
+            rakatMode: 'full', // 'full' or 'fard'
+            soundEnabled: true,
+            darkMode: false,
+            activeAmalId: 'pp_takbir_1',
+            prayers: JSON.parse(JSON.stringify(defaultPrayers)),
+            amals: JSON.parse(JSON.stringify(defaultAmals))
+        };
+
+        function getPrayerRakats(prayer, mode = state.rakatMode) {
+            if (!prayer || !prayer.parts) return 0;
+            let total = 0;
+            if (prayer.parts.fard) total += prayer.fardRakats;
+            if (mode === 'full') {
+                if (prayer.parts.sunnah && prayer.sunnahRakats > 0) total += prayer.sunnahRakats;
+                if (prayer.parts.nafl && prayer.naflRakats > 0) total += prayer.naflRakats;
+                if (prayer.parts.witr && prayer.witrRakats > 0) total += prayer.witrRakats;
+            }
+            return total;
+        }
+
+        function getPrayerCompletionFraction(prayer, mode = state.rakatMode) {
+            if (!prayer || !prayer.parts) return 0;
+            if (mode === 'fard') {
+                return prayer.parts.fard ? 1 : 0;
+            }
+            const activeTabs = ['fard'];
+            if (prayer.sunnahRakats > 0) activeTabs.push('sunnah');
+            if (prayer.naflRakats > 0) activeTabs.push('nafl');
+            if (prayer.witrRakats > 0) activeTabs.push('witr');
+
+            const doneCount = activeTabs.filter(tab => Boolean(prayer.parts[tab])).length;
+            return activeTabs.length > 0 ? doneCount / activeTabs.length : 0;
+        }
+
+        // --- Sound Synthesizer (Tone.js) ---
+        let synth = null;
+        function playTapSound(isComplete = false) {
+            if (!state.soundEnabled) return;
+            try {
+                if (!synth && typeof Tone !== 'undefined') {
+                    synth = new Tone.Synth({
+                        oscillator: { type: 'sine' },
+                        envelope: { attack: 0.005, decay: 0.08, sustain: 0, release: 0.08 }
+                    }).toDestination();
+                    synth.volume.value = -12;
+                }
+                if (synth && typeof Tone !== 'undefined') {
+                    if (Tone.context.state !== 'running') {
+                        Tone.start();
+                    }
+                    if (isComplete) {
+                        synth.triggerAttackRelease('C6', '16n');
+                        setTimeout(() => synth.triggerAttackRelease('E6', '16n'), 100);
+                    } else {
+                        synth.triggerAttackRelease('G5', '32n');
+                    }
+                }
+            } catch (e) {
+                // Ignore audio context errors if blocked
+            }
+        }
+
+        // --- Date & Theme / Sound Controls ---
+        function computeCivilHijriParts(dateObj) {
+            const utcMidnight = Date.UTC(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
+            let jd = Math.floor(utcMidnight / 86400000) + 2440587.5;
+            jd = Math.floor(jd) + 0.5;
+
+            const l = Math.floor(jd - 1948439.5) + 10632;
+            const n = Math.floor((l - 1) / 10631);
+            const lRem = l - 10631 * n + 354;
+            const j = (Math.floor((10985 - lRem) / 5316)) * (Math.floor((50 * lRem) / 17719))
+                + (Math.floor(lRem / 5670)) * (Math.floor((43 * lRem) / 15238));
+            const lAdj = lRem - (Math.floor((30 - j) / 15)) * (Math.floor((17719 * j) / 50))
+                - (Math.floor(j / 16)) * (Math.floor((15238 * j) / 43)) + 29;
+            const month = Math.min(12, Math.max(1, Math.floor((24 * lAdj) / 709)));
+            const day = Math.min(30, Math.max(1, lAdj - Math.floor((709 * month) / 24)));
+            const year = 30 * n + j - 30;
+
+            return { day, month, year };
+        }
+
+        function formatArabicHijriDate(dateObj) {
+            const calendarsToTry = ['islamic-umalqura', 'islamic-civil', 'islamic'];
+            for (const cal of calendarsToTry) {
+                try {
+                    const partsFormatter = new Intl.DateTimeFormat(`en-u-ca-${cal}`, {
+                        day: 'numeric',
+                        month: 'numeric',
+                        year: 'numeric'
+                    });
+                    const parts = partsFormatter.formatToParts(dateObj);
+                    const dayNum = parseInt(parts.find(p => p.type === 'day')?.value, 10);
+                    const monthNum = parseInt(parts.find(p => p.type === 'month')?.value, 10);
+                    const yearNum = parseInt(parts.find(p => p.type === 'year')?.value, 10);
+
+                    const monthFormatter = new Intl.DateTimeFormat(`bn-BD-u-ca-${cal}`, {
+                        month: 'long'
+                    });
+                    const rawMonthName = monthFormatter.format(dateObj).trim();
+                    const normalizedMonthName = rawMonthName.toLowerCase();
+
+                    const looksGregorian = GREGORIAN_MONTH_NAMES.has(normalizedMonthName) || (yearNum >= 1900 && yearNum <= 2100);
+                    if (!looksGregorian && dayNum >= 1 && dayNum <= 30 && monthNum >= 1 && monthNum <= 12 && yearNum > 0) {
+                        const banglaMonth = BANGLA_HIJRI_MONTHS[monthNum - 1] || rawMonthName;
+                        return `${toBengaliNumber(dayNum)} ${banglaMonth} ${toBengaliNumber(yearNum)} হিজরি`;
+                    }
+                } catch (e) {
+                    // Try next calendar
+                }
+            }
+
+            const fallback = computeCivilHijriParts(dateObj);
+            const banglaMonth = BANGLA_HIJRI_MONTHS[fallback.month - 1] || '';
+            return `${toBengaliNumber(fallback.day)} ${banglaMonth} ${toBengaliNumber(fallback.year)} হিজরি`;
+        }
+
+        function formatBanglaDate(dateObj) {
+            try {
+                const formatter = new Intl.DateTimeFormat('bn-BD-u-ca-bengali', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+                return `${formatter.format(dateObj)} বঙ্গাব্দ`;
+            } catch (e) {
+                return `${toBengaliNumber(dateObj.getDate())} বঙ্গাব্দ`;
+            }
+        }
+
+        function formatEnglishDate(dateObj) {
+            try {
+                const formatter = new Intl.DateTimeFormat('bn-BD', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+                return formatter.format(dateObj);
+            } catch (e) {
+                return toBengaliNumber(dateObj.getDate());
+            }
+        }
+
+        function updateDateDisplay() {
+            const el = document.getElementById('current-date-display');
+            if (!el) return;
+            const now = new Date();
+            try {
+                const arabicLine = formatArabicHijriDate(now);
+                const banglaLine = formatBanglaDate(now);
+                const englishLine = formatEnglishDate(now);
+
+                el.innerHTML = `
+                    <div class="text-emerald-700 dark:text-emerald-300 font-semibold">${arabicLine}</div>
+                    <div class="text-slate-600 dark:text-slate-300">${banglaLine}</div>
+                    <div class="text-slate-500 dark:text-slate-400">${englishLine}</div>
+                `;
+            } catch (e) {
+                el.innerHTML = `
+                    <div>${toBengaliNumber(now.getDate())} হিজরি</div>
+                    <div>${toBengaliNumber(now.getDate())} বঙ্গাব্দ</div>
+                    <div>${toBengaliNumber(now.getDate())}</div>
+                `;
+            }
+        }
+
+        function applyThemeAndSoundUI() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            if (state.darkMode) {
+                html.classList.add('dark');
+                html.classList.remove('light');
+                if (themeIcon) themeIcon.className = 'fa-solid fa-sun text-sm text-amber-400';
+            } else {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                if (themeIcon) themeIcon.className = 'fa-solid fa-moon text-sm';
+            }
+
+            const soundIcon = document.getElementById('sound-icon');
+            if (soundIcon) {
+                soundIcon.className = state.soundEnabled
+                    ? 'fa-solid fa-volume-high text-sm text-emerald-600 dark:text-emerald-400'
+                    : 'fa-solid fa-volume-xmark text-sm text-slate-400';
+            }
+        }
+
+        function toggleDarkMode() {
+            state.darkMode = !state.darkMode;
+            applyThemeAndSoundUI();
+            saveState();
+        }
+
+        function toggleSound() {
+            state.soundEnabled = !state.soundEnabled;
+            applyThemeAndSoundUI();
+            saveState();
+            showToast(state.soundEnabled ? 'তসবি সাউন্ড চালু করা হয়েছে' : 'তসবি সাউন্ড বন্ধ করা হয়েছে');
+        }
+
+        // --- LocalStorage Management (v3 storage key for Bengali meanings) ---
+        const STORAGE_KEY = 'amalnama_app_state_v3';
+
+        function loadState() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    const savedAmals = Array.isArray(parsed.amals) ? parsed.amals : [];
+                    const normalizedSavedAmals = savedAmals.map(a => {
+                        const defMatch = defaultAmals.find(d => d.id === a.id);
+                        return {
+                            ...(defMatch || {}), ...a,
+                            section: a.section || (defMatch ? defMatch.section : 'daily_amal'),
+                            meaning: a.meaning || (defMatch ? defMatch.meaning : '')
+                        };
+                    });
+                    const savedIds = new Set(normalizedSavedAmals.map(a => a.id));
+                    const loadedAmals = normalizedSavedAmals.concat(
+                        defaultAmals.filter(d => !savedIds.has(d.id)).map(d => JSON.parse(JSON.stringify(d)))
+                    );
+
+                    state = {
+                        ...state,
+                        ...parsed,
+                        amals: loadedAmals
+                    };
+                    state.prayers = normalizePrayers(state.prayers);
+
+                    const todayKey = new Date().toLocaleDateString('en-CA');
+                    if (state.dateKey !== todayKey) {
+                        state.dateKey = todayKey;
+                        state.prayers.forEach(p => {
+                            p.parts = { fard: false, sunnah: false, nafl: false, witr: false };
+                        });
+                        state.amals.forEach(a => { a.count = 0; });
+                        saveState();
+                        showToast('নতুন দিনের আমল শুরু হয়েছে!');
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load state:', error);
+            }
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            } catch (error) {
+                console.error('Failed to save state:', error);
+            }
+        }
+
+        // --- 1. Render 5 Daily Prayers with Separate Farz, Sunnah, Nafl & Witr Tabs ---
+        function setRakatMode(mode) {
+            state.rakatMode = mode;
+            saveState();
+            renderPrayers();
+            updateDashboardStats();
+        }
+
+        function togglePrayerPart(prayerId, partKey) {
+            try {
+                const prayer = state.prayers.find(p => p.id === prayerId);
+                if (!prayer || !prayer.parts) return;
+                if (partKey === 'sunnah' && prayer.sunnahRakats <= 0) return;
+                if (partKey === 'nafl' && prayer.naflRakats <= 0) return;
+                if (partKey === 'witr' && prayer.witrRakats <= 0) return;
+
+                prayer.parts[partKey] = !prayer.parts[partKey];
+                const isNowChecked = prayer.parts[partKey];
+
+                const partLabelMap = {
+                    fard: 'ফরজ',
+                    sunnah: 'সুন্নত',
+                    nafl: 'নফল',
+                    witr: 'বিতর'
+                };
+                const labelText = partLabelMap[partKey] || partKey;
+
+                if (isNowChecked) {
+                    playTapSound(partKey === 'fard');
+                    showToast(`${prayer.name}-এর ${labelText} সম্পন্ন হিসেবে চিহ্নিত হয়েছে`);
+                } else {
+                    playTapSound(false);
+                }
+
+                saveState();
+                renderPrayers();
+                updateDashboardStats();
+            } catch (err) {
+                console.error('Error toggling prayer part:', err);
+            }
+        }
+
+        function renderPrayers() {
+            const container = document.getElementById('prayers-list');
+            const fullBtn = document.getElementById('mode-full-btn');
+            const fardBtn = document.getElementById('mode-fard-btn');
+
+            if (state.rakatMode === 'full') {
+                fullBtn.className = 'px-2.5 py-1 rounded-lg font-semibold transition bg-emerald-600 text-white shadow-sm';
+                fardBtn.className = 'px-2.5 py-1 rounded-lg font-semibold transition text-slate-600 dark:text-slate-300';
+            } else {
+                fardBtn.className = 'px-2.5 py-1 rounded-lg font-semibold transition bg-emerald-600 text-white shadow-sm';
+                fullBtn.className = 'px-2.5 py-1 rounded-lg font-semibold transition text-slate-600 dark:text-slate-300';
+            }
+
+            container.innerHTML = state.prayers.map(prayer => {
+                const rakatsDone = getPrayerRakats(prayer, state.rakatMode);
+                const maxRakats = state.rakatMode === 'full'
+                    ? (prayer.fardRakats + prayer.sunnahRakats + prayer.naflRakats + prayer.witrRakats)
+                    : prayer.fardRakats;
+                const isFarzDone = Boolean(prayer.parts.fard);
+                const isSunnahDone = Boolean(prayer.parts.sunnah);
+                const isNaflDone = Boolean(prayer.parts.nafl);
+                const isWitrDone = Boolean(prayer.parts.witr);
+
+                const tabCount = 1
+                    + (prayer.sunnahRakats > 0 ? 1 : 0)
+                    + (prayer.naflRakats > 0 ? 1 : 0)
+                    + (prayer.witrRakats > 0 ? 1 : 0);
+
+                const gridColsClass = tabCount === 4
+                    ? 'grid-cols-2 sm:grid-cols-4'
+                    : tabCount === 3
+                        ? 'grid-cols-3'
+                        : tabCount === 2
+                            ? 'grid-cols-2'
+                            : 'grid-cols-1';
+
+                return `
+                <div class="p-3.5 rounded-2xl border transition-all ${
+                    isFarzDone
+                    ? 'bg-emerald-50/70 dark:bg-emerald-950/30 border-emerald-300/80 dark:border-emerald-800'
+                    : 'bg-slate-50/70 dark:bg-slate-900/50 border-slate-200/80 dark:border-slate-700/70'
+                }">
+                    <div class="flex items-center justify-between gap-2 mb-2.5">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-base ${isFarzDone ? 'text-emerald-900 dark:text-emerald-300' : 'text-slate-800 dark:text-slate-100'}">
+                                ${prayer.name}
+                            </span>
+                            <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-200/70 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+                                ${prayer.time}
+                            </span>
+                        </div>
+
+                        <span class="inline-block px-2.5 py-1 rounded-xl text-xs font-bold ${
+                            rakatsDone > 0
+                            ? 'bg-emerald-600/15 text-emerald-700 dark:text-emerald-300'
+                            : 'bg-slate-200/60 dark:bg-slate-700/60 text-slate-600 dark:text-slate-300'
+                        }">
+                            ${toBengaliNumber(rakatsDone)} / ${toBengaliNumber(maxRakats)} রাকাত
+                        </span>
+                    </div>
+
+                    <div class="grid ${gridColsClass} gap-2">
+                        <button type="button" onclick="togglePrayerPart('${prayer.id}', 'fard')" class="flex items-center justify-between px-2.5 py-2 rounded-xl border text-left transition select-none ${
+                            isFarzDone
+                            ? 'bg-emerald-600 border-emerald-600 text-white shadow-sm'
+                            : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-emerald-400'
+                        }">
+                            <div class="min-w-0">
+                                <div class="text-xs font-bold leading-tight">ফরজ</div>
+                                <div class="text-[10px] ${isFarzDone ? 'text-emerald-100' : 'text-slate-400'}">${toBengaliNumber(prayer.fardRakats)} রাকাত</div>
+                            </div>
+                            <span class="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 ${
+                                isFarzDone ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-700 text-transparent'
+                            }">
+                                <i class="fa-solid fa-check text-[10px]"></i>
+                            </span>
+                        </button>
+
+                        ${prayer.sunnahRakats > 0 ? `
+                        <button type="button" onclick="togglePrayerPart('${prayer.id}', 'sunnah')" class="flex items-center justify-between px-2.5 py-2 rounded-xl border text-left transition select-none ${
+                            isSunnahDone
+                            ? 'bg-emerald-700 border-emerald-700 text-white shadow-sm'
+                            : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-emerald-400'
+                        }">
+                            <div class="min-w-0">
+                                <div class="text-xs font-bold leading-tight">সুন্নত</div>
+                                <div class="text-[10px] ${isSunnahDone ? 'text-emerald-100' : 'text-slate-400'}">${toBengaliNumber(prayer.sunnahRakats)} রাকাত</div>
+                            </div>
+                            <span class="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 ${
+                                isSunnahDone ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-700 text-transparent'
+                            }">
+                                <i class="fa-solid fa-check text-[10px]"></i>
+                            </span>
+                        </button>
+                        ` : ''}
+
+                        ${prayer.naflRakats > 0 ? `
+                        <button type="button" onclick="togglePrayerPart('${prayer.id}', 'nafl')" class="flex items-center justify-between px-2.5 py-2 rounded-xl border text-left transition select-none ${
+                            isNaflDone
+                            ? 'bg-emerald-800 border-emerald-800 text-white shadow-sm'
+                            : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-emerald-400'
+                        }">
+                            <div class="min-w-0">
+                                <div class="text-xs font-bold leading-tight truncate">নফল</div>
+                                <div class="text-[10px] ${isNaflDone ? 'text-emerald-100' : 'text-slate-400'}">${toBengaliNumber(prayer.naflRakats)} রাকাত</div>
+                            </div>
+                            <span class="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 ${
+                                isNaflDone ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-700 text-transparent'
+                            }">
+                                <i class="fa-solid fa-check text-[10px]"></i>
+                            </span>
+                        </button>
+                        ` : ''}
+
+                        ${prayer.witrRakats > 0 ? `
+                        <button type="button" onclick="togglePrayerPart('${prayer.id}', 'witr')" class="flex items-center justify-between px-2.5 py-2 rounded-xl border text-left transition select-none ${
+                            isWitrDone
+                            ? 'bg-emerald-900 border-emerald-900 text-white shadow-sm'
+                            : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-emerald-400'
+                        }">
+                            <div class="min-w-0">
+                                <div class="text-xs font-bold leading-tight truncate">বিতর</div>
+                                <div class="text-[10px] ${isWitrDone ? 'text-emerald-100' : 'text-slate-400'}">${toBengaliNumber(prayer.witrRakats)} রাকাত</div>
+                            </div>
+                            <span class="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 ${
+                                isWitrDone ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-700 text-transparent'
+                            }">
+                                <i class="fa-solid fa-check text-[10px]"></i>
+                            </span>
+                        </button>
+                        ` : ''}
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // --- 2. Interactive Tasbih Counter & Custom Amals ---
+        function getActiveAmal() {
+            let found = state.amals.find(a => a.id === state.activeAmalId);
+            if (!found && state.amals.length > 0) {
+                state.activeAmalId = state.amals[0].id;
+                found = state.amals[0];
+            }
+            return found;
+        }
+
+        function selectActiveAmal(id) {
+            state.activeAmalId = id;
+            saveState();
+            renderActiveTasbih();
+            renderAmalsList();
+        }
+
+        function advanceToNextIncomplete(currentId = null) {
+            try {
+                if (!Array.isArray(state.amals) || state.amals.length === 0) return;
+
+                const startIndex = currentId
+                    ? state.amals.findIndex(a => a.id === currentId)
+                    : state.amals.findIndex(a => a.id === state.activeAmalId);
+
+                for (let offset = 1; offset <= state.amals.length; offset++) {
+                    const idx = (Math.max(0, startIndex) + offset) % state.amals.length;
+                    const candidate = state.amals[idx];
+                    if (candidate && candidate.count < candidate.target) {
+                        state.activeAmalId = candidate.id;
+                        saveState();
+                        renderActiveTasbih();
+                        renderAmalsList();
+                        showToast(`পরবর্তী আমল "${candidate.name}" নির্বাচন করা হয়েছে`);
+                        return;
+                    }
+                }
+            } catch (err) {
+                console.error('Error advancing to next incomplete amal:', err);
+            }
+        }
+
+        function incrementActiveAmal() {
+            const amal = getActiveAmal();
+            if (!amal) return;
+
+            amal.count += 1;
+            const justCompleted = amal.count === amal.target;
+
+            playTapSound(justCompleted);
+
+            if (justCompleted) {
+                showToast(`মাশাআল্লাহ! "${amal.name}" লক্ষ্যমাত্রা পূর্ণ হয়েছে!`);
+                saveState();
+                renderActiveTasbih();
+                renderAmalsList();
+                updateDashboardStats();
+                setTimeout(() => advanceToNextIncomplete(amal.id), 450);
+                return;
+            }
+
+            saveState();
+            renderActiveTasbih();
+            renderAmalsList();
+            updateDashboardStats();
+        }
+
+        function decrementActiveAmal() {
+            const amal = getActiveAmal();
+            if (!amal || amal.count <= 0) return;
+
+            amal.count -= 1;
+            playTapSound(false);
+            saveState();
+            renderActiveTasbih();
+            renderAmalsList();
+            updateDashboardStats();
+        }
+
+        function resetActiveAmal() {
+            const amal = getActiveAmal();
+            if (!amal) return;
+            amal.count = 0;
+            playTapSound(false);
+            saveState();
+            renderActiveTasbih();
+            renderAmalsList();
+            updateDashboardStats();
+            showToast(`"${amal.name}" এর গণনা ০ করা হয়েছে`);
+        }
+
+        function toggleAmalCompleteCheck(event, id) {
+            event.stopPropagation();
+            const amal = state.amals.find(a => a.id === id);
+            if (!amal) return;
+
+            if (amal.count >= amal.target) {
+                amal.count = 0;
+                playTapSound(false);
+            } else {
+                amal.count = amal.target;
+                playTapSound(true);
+                showToast(`"${amal.name}" সম্পন্ন হিসেবে চিহ্নিত হয়েছে`);
+            }
+
+            saveState();
+            renderActiveTasbih();
+            renderAmalsList();
+            updateDashboardStats();
+        }
+
+        function getBadgeStyleClasses(badgeText) {
+            if (!badgeText) return '';
+            if (badgeText.includes('শুধু ফজরের')) {
+                return 'bg-sky-500/15 text-sky-700 dark:text-sky-300 border-sky-400/30';
+            }
+            if (badgeText.includes('ফজর ও মাগরিব')) {
+                return 'bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-400/30';
+            }
+            return 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-400/30';
+        }
+
+        function renderActiveTasbih() {
+            const amal = getActiveAmal();
+            const badgeWrap = document.getElementById('active-zikr-badge-wrap');
+            const badgeEl = document.getElementById('active-zikr-badge');
+            const meaningEl = document.getElementById('active-zikr-meaning');
+
+            if (!amal) {
+                document.getElementById('active-zikr-arabic').textContent = '';
+                document.getElementById('active-zikr-name').textContent = 'কোনো আমল নেই';
+                document.getElementById('active-zikr-count').textContent = '০';
+                document.getElementById('active-zikr-target').textContent = '০';
+                document.getElementById('active-zikr-bar').style.width = '0%';
+                if (badgeWrap) badgeWrap.classList.add('hidden');
+                if (meaningEl) meaningEl.classList.add('hidden');
+                return;
+            }
+
+            if (badgeWrap && badgeEl) {
+                if (amal.badge) {
+                    badgeEl.textContent = amal.badge;
+                    badgeEl.className = `inline-block text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${getBadgeStyleClasses(amal.badge)}`;
+                    badgeWrap.classList.remove('hidden');
+                } else {
+                    badgeWrap.classList.add('hidden');
+                }
+            }
+
+            document.getElementById('active-zikr-arabic').textContent = amal.arabic || 'بِسْمِ اللَّهِ';
+            document.getElementById('active-zikr-name').textContent = amal.name;
+
+            if (meaningEl) {
+                if (amal.meaning) {
+                    meaningEl.textContent = amal.meaning;
+                    meaningEl.classList.remove('hidden');
+                } else {
+                    meaningEl.classList.add('hidden');
+                }
+            }
+
+            document.getElementById('active-zikr-count').textContent = toBengaliNumber(amal.count);
+            document.getElementById('active-zikr-target').textContent = toBengaliNumber(amal.target);
+
+            const pct = Math.min(100, Math.round((amal.count / amal.target) * 100));
+            document.getElementById('active-zikr-bar').style.width = `${pct}%`;
+
+            const statusBadge = document.getElementById('active-tasbih-status');
+            if (amal.count >= amal.target) {
+                statusBadge.innerHTML = '<span class="text-emerald-600 dark:text-emerald-400 font-bold"><i class="fa-solid fa-circle-check mr-1"></i>সম্পন্ন</span>';
+            } else {
+                statusBadge.textContent = `${toBengaliNumber(pct)}% সম্পন্ন`;
+            }
+        }
+
+        function renderAmalCard(amal) {
+            const isSelected = amal.id === state.activeAmalId;
+            const isDone = amal.count >= amal.target;
+            const pct = Math.min(100, Math.round((amal.count / amal.target) * 100));
+            const badgeClasses = amal.badge ? getBadgeStyleClasses(amal.badge) : '';
+
+            return `
+            <div onclick="selectActiveAmal('${amal.id}')" class="cursor-pointer p-3.5 rounded-2xl border transition-all ${
+                isSelected
+                ? 'bg-emerald-50/80 dark:bg-emerald-950/40 border-emerald-500 ring-1 ring-emerald-500/40'
+                : isDone
+                    ? 'bg-slate-50/80 dark:bg-slate-900/40 border-emerald-300/60 dark:border-emerald-800/60'
+                    : 'bg-slate-50/70 dark:bg-slate-900/50 border-slate-200/80 dark:border-slate-700/70 hover:border-emerald-300'
+            }">
+                <div class="flex items-start justify-between gap-3">
+                    <div class="flex items-start gap-3 min-w-0 flex-1">
+                        <button type="button" onclick="toggleAmalCompleteCheck(event, '${amal.id}')" title="সরাসরি সম্পন্ন টিক দিন" class="mt-0.5 w-7 h-7 flex-shrink-0 rounded-xl flex items-center justify-center transition ${
+                            isDone
+                            ? 'bg-emerald-600 text-white shadow-sm'
+                            : 'bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 hover:border-emerald-500'
+                        }">
+                            ${isDone ? '<i class="fa-solid fa-check text-xs"></i>' : ''}
+                        </button>
+
+                        <div class="min-w-0 flex-1">
+                            <div class="flex flex-wrap items-center gap-1.5 mb-1">
+                                ${amal.badge ? `<span class="text-[10px] px-2 py-0.5 rounded-full border font-semibold ${badgeClasses}">${amal.badge}</span>` : ''}
+                                ${isSelected ? '<span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-600 text-white font-medium">নির্বাচিত</span>' : ''}
+                            </div>
+                            <h5 class="font-bold text-sm sm:text-[15px] leading-snug break-words ${isDone ? 'text-emerald-800 dark:text-emerald-300' : 'text-slate-800 dark:text-slate-100'}">
+                                ${amal.name}
+                            </h5>
+                            ${amal.meaning ? `<p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">${amal.meaning}</p>` : ''}
+                            <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mt-1">
+                                <span>অগ্রগতি: <strong class="text-slate-700 dark:text-slate-200">${toBengaliNumber(amal.count)}</strong> / ${toBengaliNumber(amal.target)}</span>
+                                <span>(${toBengaliNumber(pct)}%)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 flex-shrink-0">
+                        <button type="button" onclick="event.stopPropagation(); selectActiveAmal('${amal.id}'); incrementActiveAmal();" class="px-2.5 py-1.5 rounded-xl bg-emerald-600/10 hover:bg-emerald-600 text-emerald-700 dark:text-emerald-300 hover:text-white text-xs font-bold transition">
+                            +১
+                        </button>
+
+                        <button type="button" onclick="deleteAmal(event, '${amal.id}')" title="মুছে ফেলুন" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition">
+                            <i class="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="w-full bg-slate-200/80 dark:bg-slate-700 h-1.5 rounded-full mt-2.5 overflow-hidden">
+                    <div class="h-full rounded-full transition-all duration-300 ${isDone ? 'bg-emerald-500' : ''}" style="width: ${pct}%; ${!isDone ? 'background-color: #FF3D00;' : ''}"></div>
+                </div>
+            </div>
+            `;
+        }
+
+        function renderAmalsList() {
+            const postPrayerContainer = document.getElementById('post-prayer-amals-list');
+            const dailyAmalContainer = document.getElementById('daily-amals-list');
+            const duaAmalContainer = document.getElementById('dua-amals-list');
+
+            const postPrayerAmals = state.amals.filter(a => a.section === 'post_prayer');
+            const dailyAmals = state.amals.filter(a => a.section === 'daily_amal' || (!a.section || (a.section !== 'post_prayer' && a.section !== 'dua_amal')));
+            const duaAmals = state.amals.filter(a => a.section === 'dua_amal');
+
+            if (postPrayerContainer) {
+                if (postPrayerAmals.length === 0) {
+                    postPrayerContainer.innerHTML = `<p class="text-center text-sm text-slate-400 py-5">এই তালিকায় কোনো আমল নেই। উপরে "নতুন আমল যোগ" বাটনে ক্লিক করুন।</p>`;
+                } else {
+                    postPrayerContainer.innerHTML = postPrayerAmals.map(renderAmalCard).join('');
+                }
+            }
+
+            if (dailyAmalContainer) {
+                if (dailyAmals.length === 0) {
+                    dailyAmalContainer.innerHTML = `<p class="text-center text-sm text-slate-400 py-5">এই তালিকায় কোনো আমল নেই। উপরে "নতুন আমল যোগ" বাটনে ক্লিক করুন।</p>`;
+                } else {
+                    dailyAmalContainer.innerHTML = dailyAmals.map(renderAmalCard).join('');
+                }
+            }
+            if (duaAmalContainer) {
+                if (duaAmals.length === 0) {
+                    duaAmalContainer.innerHTML = `<p class="text-center text-sm text-slate-400 py-5">এই তালিকায় কোনো দোয়া নেই। উপরে "নতুন দোয়া যোগ" বাটনে ক্লিক করুন।</p>`;
+                } else {
+                    duaAmalContainer.innerHTML = duaAmals.map(renderAmalCard).join('');
+                }
+            }
+        }
+
+        // --- Add & Delete Custom Amals ---
+        function toggleAddAmalForm(defaultSection = 'post_prayer') {
+            const form = document.getElementById('add-amal-form');
+            const sectionSelect = document.getElementById('new-amal-section');
+            const wasHidden = form.classList.contains('hidden');
+
+            if (wasHidden) {
+                form.classList.remove('hidden');
+                if (sectionSelect && defaultSection) {
+                    sectionSelect.value = defaultSection;
+                }
+                document.getElementById('new-amal-name').focus();
+            } else {
+                form.classList.add('hidden');
+            }
+        }
+
+        function handleAddAmal(event) {
+            event.preventDefault();
+            const nameInput = document.getElementById('new-amal-name');
+            const targetInput = document.getElementById('new-amal-target');
+            const sectionInput = document.getElementById('new-amal-section');
+            const badgeInput = document.getElementById('new-amal-badge');
+            const meaningInput = document.getElementById('new-amal-meaning');
+            const arabicInput = document.getElementById('new-amal-arabic');
+
+            const name = nameInput.value.trim();
+            const target = parseInt(targetInput.value, 10) || 100;
+            const section = sectionInput ? sectionInput.value : 'daily_amal';
+            const badge = badgeInput ? badgeInput.value.trim() : '';
+            const rawMeaning = meaningInput ? meaningInput.value.trim() : '';
+            const meaning = rawMeaning ? (rawMeaning.startsWith('অর্থ:') ? rawMeaning : `অর্থ: ${rawMeaning}`) : '';
+            const arabic = arabicInput.value.trim();
+
+            if (!name) return;
+
+            const newAmal = {
+                id: 'custom_' + Date.now(),
+                section: section,
+                badge: badge,
+                name: name,
+                meaning: meaning,
+                arabic: arabic,
+                target: target,
+                count: 0,
+                isDefault: false
+            };
+
+            state.amals.push(newAmal);
+            state.activeAmalId = newAmal.id;
+
+            nameInput.value = '';
+            targetInput.value = '100';
+            if (badgeInput) badgeInput.value = '';
+            if (meaningInput) meaningInput.value = '';
+            arabicInput.value = '';
+            document.getElementById('add-amal-form').classList.add('hidden');
+
+            saveState();
+            renderAll();
+            showToast(`নতুন আমল "${name}" যুক্ত করা হয়েছে!`);
+        }
+
+        function deleteAmal(event, id) {
+            event.stopPropagation();
+            if (state.amals.length <= 1) {
+                showToast('কমপক্ষে একটি আমল তালিকায় থাকতে হবে');
+                return;
+            }
+            state.amals = state.amals.filter(a => a.id !== id);
+            if (state.activeAmalId === id) {
+                state.activeAmalId = state.amals[0].id;
+            }
+            saveState();
+            renderAll();
+            showToast('আমলটি তালিকা থেকে মুছে ফেলা হয়েছে');
+        }
+
+        // --- 3. Overall Dashboard Progress & Report Calculation ---
+        function updateDashboardStats() {
+            const totalPrayers = state.prayers.length;
+            const completedPrayers = state.prayers.filter(p => Boolean(p.parts && p.parts.fard)).length;
+
+            let totalRakatsToday = 0;
+            let prayerFractionSum = 0;
+
+            state.prayers.forEach(p => {
+                totalRakatsToday += getPrayerRakats(p, state.rakatMode);
+                prayerFractionSum += getPrayerCompletionFraction(p, state.rakatMode);
+            });
+
+            const prayerPercent = Math.round((prayerFractionSum / totalPrayers) * 100);
+            const prayerSectionPercentEl = document.getElementById('prayer-section-percent');
+            if (prayerSectionPercentEl) {
+                prayerSectionPercentEl.textContent = `${toBengaliNumber(prayerPercent)}% (${toBengaliNumber(totalRakatsToday)} রাকাত)`;
+            }
+
+            const totalAmals = state.amals.length;
+            const completedAmalsCount = state.amals.filter(a => a.count >= a.target).length;
+
+            let amalProgressSum = 0;
+            state.amals.forEach(a => {
+                amalProgressSum += Math.min(1, a.count / a.target);
+            });
+
+            const totalItems = totalPrayers + totalAmals;
+            const completedItemsEquivalent = prayerFractionSum + amalProgressSum;
+            const overallPercent = totalItems > 0 ? Math.round((completedItemsEquivalent / totalItems) * 100) : 0;
+
+            const totalRakatsEl = document.getElementById('total-rakats-display');
+            const prayersCompletedEl = document.getElementById('prayers-completed-display');
+            const amalsCompletedEl = document.getElementById('amals-completed-display');
+            const overallPctEl = document.getElementById('overall-percentage-text');
+            const circle = document.getElementById('overall-progress-ring');
+            const titleEl = document.getElementById('motivational-title');
+            const subEl = document.getElementById('motivational-subtitle');
+
+            if (totalRakatsEl) totalRakatsEl.textContent = toBengaliNumber(totalRakatsToday);
+            if (prayersCompletedEl) prayersCompletedEl.textContent = `${toBengaliNumber(completedPrayers)} / ${toBengaliNumber(totalPrayers)}`;
+            if (amalsCompletedEl) amalsCompletedEl.textContent = `${toBengaliNumber(completedAmalsCount)} / ${toBengaliNumber(totalAmals)}`;
+
+            if (overallPctEl) overallPctEl.textContent = `${toBengaliNumber(overallPercent)}%`;
+            if (circle) {
+                const circumference = 2 * Math.PI * 50;
+                const offset = circumference - (overallPercent / 100) * circumference;
+                circle.style.strokeDashoffset = offset;
+            }
+
+            if (titleEl && subEl) {
+                if (overallPercent === 100) {
+                    titleEl.textContent = 'আলহামদুলিল্লাহ! আজকের সব আমল পূর্ণ হয়েছে';
+                    subEl.textContent = 'মহান আল্লাহ তাআলা আপনার সকল ইবাদত ও জিকির কবুল করুন। আমিন।';
+                } else if (overallPercent >= 60) {
+                    titleEl.textContent = 'মাশাআল্লাহ! দারুণ অগ্রগতি হয়েছে';
+                    subEl.textContent = `আপনি ইতিমধ্যে আজকের ${toBengaliNumber(overallPercent)}% আমল সম্পন্ন করেছেন। বাকিগুলোও পূর্ণ করুন।`;
+                } else if (overallPercent > 0) {
+                    titleEl.textContent = 'বরকতময় শুরু হয়েছে!';
+                    subEl.textContent = `আজ মোট ${toBengaliNumber(totalRakatsToday)} রাকাত নামাজ ও ${toBengaliNumber(completedAmalsCount)}টি আমল পূর্ণ হয়েছে।`;
+                } else {
+                    titleEl.textContent = 'আল্লাহ আপনার আমল কবুল করুন';
+                    subEl.textContent = 'আজকের নির্ধারিত নামাজ ও জিকিরগুলো সম্পন্ন করে টিক চিহ্ন দিন।';
+                }
+            }
+        }
+
+        // --- Reset Modal & Toast Helpers ---
+        function openResetModal() {
+            const modal = document.getElementById('reset-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeResetModal() {
+            const modal = document.getElementById('reset-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function confirmResetDay() {
+            state.prayers.forEach(p => {
+                p.parts = { fard: false, sunnah: false, nafl: false, witr: false };
+            });
+            state.amals.forEach(a => { a.count = 0; });
+            state.dateKey = new Date().toLocaleDateString('en-CA');
+            saveState();
+            renderAll();
+            closeResetModal();
+            showToast('আজকের সব হিসাব নতুন করে শুরু করা হয়েছে');
+        }
+
+        let toastTimeout;
+        function showToast(message) {
+            const box = document.getElementById('toast-box');
+            const msgEl = document.getElementById('toast-message');
+            msgEl.textContent = message;
+
+            box.classList.remove('translate-y-20', 'opacity-0');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                box.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        function renderAll() {
+            updateDateDisplay();
+            applyThemeAndSoundUI();
+            renderPrayers();
+            renderActiveTasbih();
+            renderAmalsList();
+            updateDashboardStats();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            renderAll();
+        });
+    </script>
+</body>
+</html>

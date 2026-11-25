@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>আমলনামা — দৈনিক নামাজ ও তসবি ট্র্যাকার</title>
+    <title>দৈনিক আমল — দৈনিক নামাজ, জিকির ও দোয়া</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Hind Siliguri & Amiri (for Arabic) -->
@@ -122,7 +122,7 @@
                     <i class="fa-solid fa-mosque text-lg"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl font-bold text-emerald-900 dark:text-emerald-400 leading-tight">আমার দৈনিক আমলনামা</h1>
+                    <h1 class="text-xl font-bold text-emerald-900 dark:text-emerald-400 leading-tight">দৈনিক আমল</h1>
                     <div id="current-date-display" class="text-xs text-slate-500 dark:text-slate-400 font-medium leading-snug mt-0.5 space-y-0.5">
                         <div>আরবি তারিখ লোড হচ্ছে...</div>
                         <div>বাংলা তারিখ লোড হচ্ছে...</div>
@@ -334,6 +334,7 @@
                                 <select id="new-amal-section" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-sm focus:outline-none focus:border-emerald-500">
                                     <option value="post_prayer">পাঁচ ওয়াক্ত নামাজের পর</option>
                                     <option value="daily_amal">দৈনিক জিকির এবং আমল</option>
+                                    <option value="dua_amal">দোয়া ও আমল</option>
                                 </select>
                             </div>
                         </div>
@@ -385,6 +386,23 @@
                     <div id="daily-amals-list" class="space-y-2.5">
                         <!-- Rendered dynamically via JS -->
                     </div>
+                </div>
+
+                <!-- Section 3: দোয়া ও আমল -->
+                <div class="bg-white dark:bg-slate-800 rounded-3xl p-5 shadow-sm border border-slate-200/80 dark:border-slate-700/80">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span>
+                                দোয়া ও আমল
+                            </h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">প্রতিদিনের প্রয়োজনীয় দোয়াগুলো পড়ুন এবং সম্পন্ন হলে টিক দিন</p>
+                        </div>
+                        <button type="button" onclick="toggleAddAmalForm('dua_amal')" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition">
+                            <i class="fa-solid fa-plus"></i><span>নতুন দোয়া যোগ</span>
+                        </button>
+                    </div>
+                    <div id="dua-amals-list" class="space-y-2.5"></div>
                 </div>
 
             </section>
@@ -829,7 +847,29 @@
                 target: 1000,
                 count: 0,
                 isDefault: true
-            }
+            },
+
+            // === Section 3: দোয়া ও আমল ===
+            { id: 'dua_halal_rizq', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'আল্লাহুম্মাকফিনি বিহালালিকা আন হারামিকা ওয়া আগনিনি বিফাদলিকা আম্মান সিওয়াক।', meaning: 'অর্থ: হে আল্লাহ! আপনার হালাল রিজিক দিয়ে আমাকে হারাম থেকে বাঁচিয়ে রাখুন এবং আপনার অনুগ্রহ দিয়ে আমাকে আপনি ছাড়া অন্য সবার থেকে অমুখাপেক্ষী করে দিন।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_beneficial_knowledge', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'আল্লাহুম্মা ইন্নি আসআলুকা ইলমান নাফিআঁও ওয়া রিযকান তায়্যিবাঁও ওয়া আমালাম মুতাকাব্বালা।', meaning: 'অর্থ: হে আল্লাহ! আমি আপনার কাছে উপকারী জ্ঞান, পবিত্র রিজিক এবং কবুলযোগ্য আমল প্রার্থনা করি।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_musa_rizq', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'রাব্বি ইন্নি লিমা আনযালতা ইলায়্যা মিন খাইরিন ফাকির।', meaning: 'অর্থ: হে আমার রব! আপনি আমার প্রতি যে কল্যাণ (রিজিক) নাযিল করবেন, আমি তার মুখাপেক্ষী।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_food_barakah', section: 'dua_amal', badge: 'দোয়া ও আমল', name: "আল্লাহুম্মা বারিক লানা ফিহি ওয়া আত'ইমনা খাইরাম মিনহু। (খাবার বা রিজিকের ক্ষেত্রে)", meaning: 'অর্থ: হে আল্লাহ! এতে আমাদের জন্য বরকত দান করুন এবং এর চেয়ে উত্তম রিজিক আমাদের দান করুন।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_poverty', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'আল্লাহুম্মা ইন্নি আউজুবিকা মিনাল ফাকরি, ওয়াল কিল্লাতি, ওয়াজ জিল্লাতি, ওয়া আউজুবিকা মিন আন আজলিমা আও উজলাম।', meaning: 'অর্থ: হে আল্লাহ! আমি আপনার কাছে আশ্রয় চাই দারিদ্র্য থেকে, স্বল্পতা বা কম অনুগ্রহ থেকে এবং লাঞ্ছনা বা অসম্মান থেকে। আরও আশ্রয় চাই কারও ওপর জুলুম করা থেকে অথবা কারও দ্বারা জুলুমের শিকার হওয়া থেকে।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_yunus', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'লা ইলাহা ইল্লা আনতা সুবহানাকা ইন্নি কুনতু মিনাজ জ্বালিমিন।', meaning: 'অর্থ: আপনি ছাড়া কোনো সত্য ইলাহ নেই; আপনি পবিত্র-মহান। নিশ্চয়ই আমি জালিমদের অন্তর্ভুক্ত।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_anxiety', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'আল্লাহুম্মা ইন্নি আউজুবিকা মিনাল হাম্মি ওয়াল হুজনি, ওয়া আউজুবিকা মিনাল আজজি ওয়াল কাসালি, ওয়া আউজুবিকা মিনাল জুবনি ওয়াল বুখলি, ওয়া আউজুবিকা মিন গালাবাতিদ দাইনি ওয়া কাহরির রিজাল।', meaning: 'অর্থ: হে আল্লাহ! আমি আপনার আশ্রয় চাই দুশ্চিন্তা ও দুঃখ থেকে, অপারগতা ও অলসতা থেকে, কাপুরুষতা ও কৃপণতা থেকে, এবং ঋণের ভার ও মানুষের দমন-পীড়ন থেকে।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_shifa', section: 'dua_amal', badge: 'দোয়া ও আমল', name: "আল্লাহুম্মা রাব্বান নাস, আযহিবিল বা'স, ইশফি ওয়া আনতাশ শাফি, লা শিফাআ ইল্লা শিফাউকা, শিফাআঁল লা ইউগাদিরু সাকামা।", meaning: 'অর্থ: হে আল্লাহ! মানুষের রব, কষ্ট দূর করে দিন, আরোগ্য দান করুন—আপনিই আরোগ্যদাতা। আপনার আরোগ্য ছাড়া কোনো আরোগ্য নেই; এমন আরোগ্য দিন যা কোনো রোগ বাকি রাখে না।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_health', section: 'dua_amal', badge: 'দোয়া ও আমল', name: "আল্লাহুম্মা আফিনি ফি বাদানি, আল্লাহুম্মা আফিনি ফি সাম'য়ি, আল্লাহুম্মা আফিনি ফি বাসারি, লা ইলাহা ইল্লা আনতা। (সকাল-সন্ধ্যা ৩ বার)", meaning: 'অর্থ: হে আল্লাহ! আমার শরীরে সুস্থতা দিন, আমার শ্রবণশক্তিতে সুস্থতা দিন, আমার দৃষ্টিশক্তিতে সুস্থতা দিন। আপনি ছাড়া কোনো সত্য ইলাহ নেই।', arabic: '', target: 3, count: 0, isDefault: true },
+            { id: 'dua_ayyub', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'রাব্বি আন্নি মাসসানিয়াদ দুররু ওয়া আনতা আরহামুর রাহিমিন।', meaning: 'অর্থ: হে আমার রব! আমাকে রোগ-কষ্ট স্পর্শ করেছে, আর আপনি তো সর্বশ্রেষ্ঠ দয়ালু।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_forgive_home_rizq', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'আল্লাহুম্মাগফির লি যাম্বি, ওয়া ওয়াস্তি লি ফী দারী, ওয়া বারিক লি ফী রিযকী।', meaning: 'অর্থ: হে আল্লাহ! আমার গুনাহ ক্ষমা করে দিন, আমার ঘর প্রশস্ত করে দিন এবং আমার রিজিকে বরকত দান করুন।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_unexpected_rizq', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'আল্লাহুম্মা বারিক লি ফি রিজকি ওয়ারজুকনি মিন হাইছু লা আহতাছিবু।', meaning: 'অর্থ: হে আল্লাহ! আমার রিজিকে বরকত দান করুন এবং আমাকে এমন উৎস থেকে রিজিক দিন, যা আমার ধারণারও বাইরে।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_parents_mercy', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'রাব্বির হামহুমা কামা রাব্বায়ানি সাগিরা।', meaning: 'অর্থ: হে আমার পালনকর্তা! তাদের উভয়ের প্রতি দয়া করুন, যেমন তারা আমাকে শৈশবে লালন-পালন করেছেন।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_parents_believers', section: 'dua_amal', badge: 'দোয়া ও আমল', name: "রাব্বানাগ ফিরলি ওয়ালি ওয়ালিদাইয়া, ওয়ালিল মু'মিনিনা ইয়াওমা ইয়াক্বুমুল হিসাব।", meaning: 'অর্থ: হে আমাদের পালনকর্তা! যেদিন হিসাব কায়েম হবে, সেদিন আমাকে, আমার পিতা-মাতাকে এবং সব মুমিনকে ক্ষমা করুন।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_righteous_child', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'রব্বি হাব লি মিনাস সালিহিন।', meaning: 'অর্থ: হে আমার রব, আমাকে সৎকর্মশীল সন্তান দান করুন।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_family', section: 'dua_amal', badge: 'দোয়া ও আমল', name: "রাব্বানা হাব লানা মিন আজওয়াজিনা ওয়া জুররিয়্যাতিনা কুররাতা আ'ইউনিওঁ, ওয়াজ'আলনা লিলমুত্তাকীনা ইমামা।", meaning: 'অর্থ: হে আমাদের রব! আপনি আমাদেরকে এমন স্ত্রী ও সন্তানাদি দান করুন, যাদের দেখে আমাদের চোখ জুড়াবে এবং আমাদেরকে মুত্তাকীদের আদর্শ বানিয়ে দিন।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_city_safety', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'রাব্বিজআল হাজাল বালাদা আ-মিনাও ওয়াজনুবনী ওয়ান্যা আন না-বুদাল আসনা-ম।', meaning: 'অর্থ: হে আমার পালনকর্তা! এ নগরকে নিরাপদ করুন এবং আমাকে ও আমার সন্তানদের মূর্তি পূজা থেকে দূরে রাখুন।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_praise', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'আলহামদু লিল্লাহি ওয়াশ-শুকরু লাকা ইয়া মালিকাল মুলুক, ইয়া রব্বি ওয়া ওয়ালিয়্যি ওয়া রজিক্বি।', meaning: 'অর্থ: সকল প্রশংসা ও কৃতজ্ঞতা কেবল আপনারই, হে রাজাধিরাজ! হে আমার প্রতিপালক, অভিভাবক ও রিজিকদাতা।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_help', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'ইয়া হাইয়্যু ইয়া কাইয়্যুমু বিরাহমাতিকা আস্তাগিছ, আসলিহ লি শানি কুল্লাহু, ওয়ালা তাকিলনি ইলা নাফসি তারফাতা আইন।', meaning: 'অর্থ: হে চিরঞ্জীব, হে সর্বকিছুর ধারক ও রক্ষণাবেক্ষণকারী! আপনার রহমতের উসিলায় আমি সাহায্য প্রার্থনা করছি। আপনি আমার সার্বিক বিষয় সংশোধন করে দিন এবং চোখের পলকের সময়ের জন্যও আমাকে আমার নিজের ওপর ছেড়ে দেবেন না।', arabic: '', target: 1, count: 0, isDefault: true },
+            { id: 'dua_rabbi_qareeb', section: 'dua_amal', badge: 'দোয়া ও আমল', name: 'ইন্না রব্বী ক্বারীবুম মুজীব।', meaning: 'অর্থ: নিশ্চয়ই আমার রব অতি নিকটে, দোয়া কবুলকারী।', arabic: '', target: 3, count: 0, isDefault: true },
         ];
 
         // Migrate legacy prayer objects into separate parts safely
@@ -1071,16 +1111,19 @@
                 const saved = localStorage.getItem(STORAGE_KEY);
                 if (saved) {
                     const parsed = JSON.parse(saved);
-                    const loadedAmals = Array.isArray(parsed.amals) && parsed.amals.length > 0
-                        ? parsed.amals.map(a => {
-                            const defMatch = defaultAmals.find(d => d.id === a.id);
-                            return {
-                                ...a,
-                                section: a.section || (defMatch ? defMatch.section : 'daily_amal'),
-                                meaning: a.meaning || (defMatch ? defMatch.meaning : '')
-                            };
-                        })
-                        : JSON.parse(JSON.stringify(defaultAmals));
+                    const savedAmals = Array.isArray(parsed.amals) ? parsed.amals : [];
+                    const normalizedSavedAmals = savedAmals.map(a => {
+                        const defMatch = defaultAmals.find(d => d.id === a.id);
+                        return {
+                            ...(defMatch || {}), ...a,
+                            section: a.section || (defMatch ? defMatch.section : 'daily_amal'),
+                            meaning: a.meaning || (defMatch ? defMatch.meaning : '')
+                        };
+                    });
+                    const savedIds = new Set(normalizedSavedAmals.map(a => a.id));
+                    const loadedAmals = normalizedSavedAmals.concat(
+                        defaultAmals.filter(d => !savedIds.has(d.id)).map(d => JSON.parse(JSON.stringify(d)))
+                    );
 
                     state = {
                         ...state,
@@ -1528,9 +1571,11 @@
         function renderAmalsList() {
             const postPrayerContainer = document.getElementById('post-prayer-amals-list');
             const dailyAmalContainer = document.getElementById('daily-amals-list');
+            const duaAmalContainer = document.getElementById('dua-amals-list');
 
             const postPrayerAmals = state.amals.filter(a => a.section === 'post_prayer');
-            const dailyAmals = state.amals.filter(a => a.section !== 'post_prayer');
+            const dailyAmals = state.amals.filter(a => a.section === 'daily_amal' || (!a.section || (a.section !== 'post_prayer' && a.section !== 'dua_amal')));
+            const duaAmals = state.amals.filter(a => a.section === 'dua_amal');
 
             if (postPrayerContainer) {
                 if (postPrayerAmals.length === 0) {
@@ -1545,6 +1590,13 @@
                     dailyAmalContainer.innerHTML = `<p class="text-center text-sm text-slate-400 py-5">এই তালিকায় কোনো আমল নেই। উপরে "নতুন আমল যোগ" বাটনে ক্লিক করুন।</p>`;
                 } else {
                     dailyAmalContainer.innerHTML = dailyAmals.map(renderAmalCard).join('');
+                }
+            }
+            if (duaAmalContainer) {
+                if (duaAmals.length === 0) {
+                    duaAmalContainer.innerHTML = `<p class="text-center text-sm text-slate-400 py-5">এই তালিকায় কোনো দোয়া নেই। উপরে "নতুন দোয়া যোগ" বাটনে ক্লিক করুন।</p>`;
+                } else {
+                    duaAmalContainer.innerHTML = duaAmals.map(renderAmalCard).join('');
                 }
             }
         }
